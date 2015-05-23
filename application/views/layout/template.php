@@ -52,17 +52,17 @@
                                     <li><a href=\"".base_url()."index.php/ws_bobot\">Bobot Nilai</a></li-->
                                     <li><a href=\"".base_url()."index.php/ws_mahasiswa\">Mahasiswa</a></li>
                                     <li><a href=\"".base_url()."index.php/ws_nilai\">Nilai Semester Mahasiswa</a></li>
-                                    <li><a href=\"".base_url()."index.php/#\">Aktivitas Kuliah Mahasiswa</a></li>
+                                    <li><a href=\"".base_url()."index.php/ws_akm\">Aktivitas Kuliah Mahasiswa</a></li>
                                     <li><a href=\"".base_url()."index.php/#\">Aktivitas Mengajar Dosen</a></li>
-                                    <!--li><a href=\"".base_url()."index.php/ws_mahasiswa_pt\">Mahasiswa PT</a></li>
-                                    <li><a href=\"".base_url()."index.php/ws_wilayah\">Wilayah</a></li-->
+                                    <li><a href=\"".base_url()."index.php/ws_npindahan\">Nilai Mahasiswa Pindahan</a></li>
+                                    <li><a href=\"".base_url()."index.php/ws_wilayah\">Wilayah</a></li>
                                     <!--li class=\"divider\"></li>
                                     <li><a href=\"#\">Separated link</a></li>
                                     <li class=\"divider\"></li>
                                     <li><a href=\"#\">One more separated link</a></li-->
                                   </ul>
                                 </li>
-                                <li><a href=\"".base_url()."index.php/welcome/token\">Generate Token</a></li>
+                                <li><a href=\"".base_url()."index.php/welcome/listtable\">List Tabel</a></li>
                                 <!--li><a href=\"#\">Tabel Data</a></li-->
                       </ul>";
                 }
@@ -72,13 +72,23 @@
             <?php
                 if ($this->session->userdata('login')) {
                     echo "<!--li><a href=\"".base_url()."index.php/welcome/token\">Generate Token</a></li-->
-                          <li><a href=\"".base_url()."index.php/welcome/listtable\">List Tabel</a></li>
-                          <li class=\"active\"><a href=\"".base_url()."index.php/welcome/logout\"><span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span> Logout</a></li>";
+                          <li class=\"dropdown active\">
+                              <!--a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">
+                                    ".$this->session->userdata('username')." on ".$this->session->userdata('ws')." <span class=\"caret\"></span>
+                              </a-->
+                              <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">
+                                    ".$this->session->userdata('username')." <span class=\"caret\"></span>
+                              </a>
+                              <ul class=\"dropdown-menu\" role=\"menu\">
+                                <li><a href=\"".base_url()."index.php/welcome/token/".$this->uri->segment(1)."-".$this->uri->segment(2)."\">Generate Token</a></li>
+                                <li class=\"divider\"></li>
+                                <li><a href=\"".base_url()."index.php/welcome/logout\"><span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span> Logout</a></li>
+                              </ul>
+                          </li>";
                 } else {
                     echo "<li><a href=\"".base_url()."index.php/ws\">Login</a></li>";
                 }
             ?>
-            
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -91,11 +101,20 @@
     <div class="footer navbar-default navbar-fixed-bottom">
       <div class="container-fluid" align="right">
           <?php if ($this->session->userdata('login')) { ?>
-          <span class="label label-danger">
+          <!--span class="label label-danger">
                   <?php echo $this->session->userdata('username');?> | 
                   <?php echo $this->session->userdata('ws');?> | 
                   <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <a href="<?php echo base_url();?>index.php/welcome/logout">Logout</a>
-          </span>
+          </span-->
+          <?php
+                $temp_pecah = explode('/ws/', $this->session->userdata('ws'));
+                $temp_pecah2 = explode('.php?wsdl', $temp_pecah[1]);
+                //echo $temp_pecah[0];
+          ?>
+          <div class="btn-group btn-group-xs" role="group" aria-label="Switch Database">
+              <button type="button" id="btn_live" class="btn <?php echo $temp_pecah2['0']=='live'?"btn-success":"btn-default" ?>"  data-src="live" >Live <?php echo $temp_pecah2['0']=='live'?"(ON)":"(OFF)" ?></button>
+              <button type="button" id="btn_sandbox" class="btn <?php echo $temp_pecah2['0']=='sandbox'?"btn-danger":"btn-default" ?>"  data-src="sandbox" >Sandbox <?php echo $temp_pecah2['0']=='sandbox'?"(ON)":"(OFF)" ?></button>
+          </div>
           <?php }?> 
       </div>
     </div>
@@ -106,6 +125,28 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="<?php echo base_url();?>assets/js/jquery.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+    <script>
+      $('#btn_sandbox').on('click', function () {
+        var sandbox = $(this).attr('data-src');
+        var uri = '<?php echo $this->uri->segment(1); ?>-<?php echo $this->uri->segment(2); ?>';
+        var url = '<?php echo base_url().'index.php/welcome/set_koneksi/'; ?>';
+        
+        var temp_confirm = confirm('Anda yakin ingin mengubah jenis koneksi ke Webservice Feeder');
+        if (temp_confirm==true) {
+            $(location).attr('href',url+sandbox+'/'+uri);
+        };
+      })
+      
+      $('#btn_live').on('click', function () {
+        var live = $(this).attr('data-src');
+        var uri = '<?php echo $this->uri->segment(1); ?>-<?php echo $this->uri->segment(2); ?>';
+        var url = '<?php echo base_url().'index.php/welcome/set_koneksi/'; ?>';
+        var temp_confirm = confirm('Anda yakin ingin mengubah jenis koneksi ke Webservice Feeder');
+        if (temp_confirm==true) {
+            $(location).attr('href',url+live+'/'+uri);
+        };
+      })
+    </script>
     <script>
         $(document).ready(function(){
           $('a.modalButton').click(function(){

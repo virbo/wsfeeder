@@ -1,79 +1,123 @@
-<!--div class="page-header"-->
-  <h1>View <small>Tabel <?php echo $tabel;?></small></h1>
-<!--/div-->
-<div class="row">
-    <div class="col-md-6">
-        <!--a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url().$url_add;?>" data-target="#modalku"-->
-        <a href="<?php echo base_url().$url_add;?>" class="modalButton btn btn-success">
-            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Import data (CSV/Excel)
-        </a>
-        <a href="javascript:void();" class="modalButton btn btn-warning" data-toggle="modal" data-src="<?php echo base_url();?>index.php/welcome/listdir/mahasiswa" data-target="#modalku">
-            <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Struktur tabel
-        </a>
-        <a href="<?php echo base_url();?>/index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info">
-            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download File CSV
-        </a>
+<div class="page-header" style="margin-top: 10px;" >
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Data Mahasiswa</h4>
+        </div>
+        <div class="col-md-8">
+            
+        </div>    
     </div>
-    <div class="col-md-6">
-        
-    </div>
+    
 </div>
 <div class="row">
-    <div class="col-md-6" style="margin-top: 40px;">
-        <?php
-            $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
-            $end = $this->pagination->cur_page * $this->pagination->per_page;
-            
-            //echo "Showing ".$start.' - '.$end.' of '.$total.' result <br />'.$this->pagination->cur_page.'<br />'.$this->pagination->per_page;
-            echo "Showing ".$start.' - '.$end.' of '.$total.' results';
-        ?>
-    </div>
-    <div class="col-md-6">
-        <?php echo $pagination;?>
-    </div>
-</div>
-
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th>#</th>
-            <?php
-                foreach ($listsdic['result'] as $key => $value) {
-                    echo "<th>".$value['column_name']."</th>";
-                }
-            ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            $i=0+$offset;
-            foreach ($listsrec['result'] as $key => $value) {
-                echo "<tr>
-                            <td>".++$i."</td>";
-                            foreach ($listsdic['result'] as $key2 => $value2) {
-                                if (isset($value[$value2['column_name']])) {
-                                    $temp_isi = $value[$value2['column_name']];
-                                } else {
-                                    $temp_isi = "";
-                                }
-                                echo "<td>".$temp_isi."</td>";
-                            }
-                   echo "</tr>";
-            }        
-        ?>
-    </tbody>
-</table>
-<div class="row">
-    <div class="col-md-6">
-        <?php
-            $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
-            $end = $this->pagination->cur_page * $this->pagination->per_page;
-            
-            //echo "Showing ".$start.' - '.$end.' of '.$total.' result <br />'.$this->pagination->cur_page.'<br />'.$this->pagination->per_page;
-            echo "Showing ".$start.' - '.$end.' of '.$total.' results';
-        ?>
-    </div>
-    <div class="col-md-6">
-        <?php echo $pagination;?>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_csv" data-target="#modalku">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Upload data CSV
+                </a>
+                <a href="javascript:void();" class="modalButton btn btn-warning" data-toggle="modal" data-src="<?php echo base_url();?>index.php/welcome/listdir/mahasiswa" data-target="#modalku">
+                    <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Struktur tabel
+                </a>
+                <a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info">
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download File CSV
+                </a>
+            </div>
+            <div class="panel-body">
+                <h4>Daftar Kelas Perkuliahan Setiap Semester Per Kelas.</h4>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk melihat Daftar Asli Nilai Mahasiswa.<br />
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk Mendownload Daftar Nilai Mahasiswa.<br />
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload File CSV</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.
+            </div>
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>NIM</th>
+                        <th>Nama Mahasiswa</th>
+                        <th>Tanggal Lahir</th>
+                        <th>Program Studi</th>
+                        <th>Status Masuk</th>
+                        <th>Angkatan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $i=0+$offset;
+                        foreach ($listsrec as $row) {
+                            echo "<tr>
+                                        <td>".++$i."</td>
+                                        <td>".$row['nipd']."</td>
+                                        <td>".$row['nm_pd']."</td>
+                                        <td>".date('d-m-Y',strtotime($row['tgl_lahir']))."</td>
+                                        <td>".$row['fk__sms']."</td>
+                                        <td>".$row['fk__jns_daftar']."</td>
+                                        <td>".substr($row['mulai_smt'], 0,4)."</td>";
+                                        
+                                        $filter_mhs = "id_pd='".$row['id_pd']."'";
+                                        $dump_mlulus = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa',$filter_mhs);
+                                        $dumy_mlulus = $dump_mlulus['result']['stat_pd'];
+                                        
+                                        $filter_lulus = "id_stat_mhs='".$dumy_mlulus."'";
+                                        $dump_lulus = $this->feeder->getrecord($this->session->userdata('token'),'status_mahasiswa',$filter_lulus);
+                                        $dumy_lulus = $dump_lulus['result']['nm_stat_mhs'];
+                                        
+                                        $label = $dumy_mlulus=='L'?'label-success':'';
+                                        $label .= $dumy_mlulus=='K'?'label-danger':'';
+                                        $label .= $dumy_mlulus=='D'?'label-warning':'';
+                                        $label .= $dumy_mlulus=='N'?'label-default':'';
+                                        $label .= $dumy_mlulus=='C'?'label-info':'';
+                                        $label .= $dumy_mlulus=='G'?'label-primary':'';
+                                        $label .= $dumy_mlulus=='X'?'label-default':'';
+                                        $label .= $dumy_mlulus=='A'?'label-primary':'';
+                                  echo "<td><span class=\"label ".$label."\">".$dumy_lulus."</span></td>
+                                        <td>";
+                                        if ($row['id_jns_daftar']==2) {
+                                            echo "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"...\">
+                                                <button type=\"button\" class=\"btn btn-default dropdown-toggle btn-danger\" data-toggle=\"dropdown\" aria-expanded=\"false\">
+                                                    <span class=\"glyphicon glyphicon-th\" aria-hidden=\"true\"></span> Nilai Pindahan <span class=\"caret\"></span>
+                                                </button>
+                                                <ul class=\"dropdown-menu\" role=\"menu\">
+                                                    <li><a href=\"#\">Lihat Nilai Pindahan</a></li>
+                                                    <li><a href=\"#\">Download Daftar Nilai (CSV)</a></li>
+                                                    <li><a href=\"#\">Upload Nilai Pindahan (CSV)</a></li>
+                                                </ul>
+                                            </div>";
+                                        }
+                                            
+                                 echo "</td>
+                                  </tr>";
+                        }
+                        /*foreach ($listsrec['result'] as $key => $value) {
+                            echo "<tr>
+                                        <td>".++$i."</td>";
+                                        foreach ($listsdic['result'] as $key2 => $value2) {
+                                            if (isset($value[$value2['column_name']])) {
+                                                $temp_isi = $value[$value2['column_name']];
+                                            } else {
+                                                $temp_isi = "";
+                                            }
+                                            echo "<td>".$temp_isi."</td>";
+                                        }
+                               echo "</tr>";
+                        }*/       
+                    ?>
+                </tbody>
+            </table>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <?php
+                            echo "Showing ".$start.' - '.$end.' of '.$total.' results';
+                        ?>
+                    </div>
+                    <div class="col-md-6" style="margin-top: -15px;" >
+                        <?php echo $pagination;?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

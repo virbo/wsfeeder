@@ -140,7 +140,7 @@ class Ws_nilai extends CI_Controller {
                 $temp_result = $this->feeder->updaterset($this->session->userdata('token'),$this->tbl_nilai,$array);
                 
                 $sukses_count = 0;
-                $sukses_msg = '';
+                //$sukses_msg = '';
                 $error_count = 0;
                 $error_msg = array();
                 $i=0;
@@ -225,6 +225,8 @@ class Ws_nilai extends CI_Controller {
                                              );                                            
         
         //pagination
+        //var_dump($temp_rec['result']);
+        
         $config['base_url'] = site_url('ws_nilai/kelas');
         $config['total_rows'] = $temp_count['result'];
         $config['per_page'] = $this->limit;
@@ -232,6 +234,7 @@ class Ws_nilai extends CI_Controller {
         $this->pagination->initialize($config);
         //
         $data['pagination'] = $this->pagination->create_links();
+        //$data['offset'] = $offset;
         $data['offset'] = $offset;
         //$data['listsdic'] = $temp_dic;
         $data['listsrec'] = $temp_rec['result'];
@@ -241,6 +244,10 @@ class Ws_nilai extends CI_Controller {
         $data['listprodi'] = $temp_prodi['result'];
         $data['semester'] = $temp_semester['result'];
         //var_dump($temp_semester['result']);
+        
+        $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
+        $data['start'] = $start;
+        $data['end'] = $this->pagination->cur_page * $this->pagination->per_page;
 
         tampil('nilai/__view_kelas',$data);
     }

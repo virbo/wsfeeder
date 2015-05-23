@@ -89,25 +89,34 @@ class Welcome extends CI_Controller {
         
     }
     
-    public function token()
+    public function token($uri='')
     {
-        $temp_token = $this->feeder->new_token($this->session->userdata('username'),$this->session->userdata('password'));
-        //var_dump($temp_token);
-        //if ($temp_token==NULL) {
+        if (!empty($uri)) {
+            $temp_uri = explode('-', $uri);
+            $new_uri = $temp_uri[0].'/'.$temp_uri[1];
+            
+            $temp_token = $this->feeder->new_token($this->session->userdata('username'),$this->session->userdata('password'));
             $this->session->set_userdata('token',$temp_token);
-           // $this->session->set_flashdata('token_sukses','Generate new token success');
-            //redirect('welcome');
-        //} else {
-            //echo "Generate Token Baru Gagal";
-          //  $this->session->set_flashdata('token_error','Generate new token invalid');
-            //redirect('welcome');
-        //}
-        redirect('welcome');
-        //tampil('__token');
-        //$this->session->set_userdata('token',$temp_token);
-        //echo $this->session->userdata('token');
-        
-        
+            redirect(base_url().'index.php/'.$new_uri);
+        }
+    }
+    
+    public function set_koneksi($koneksi='',$uri)
+    {
+        if (!empty($koneksi)) {
+            $temp_pecah = explode('/ws/', $this->session->userdata('ws'));
+            $url = $temp_pecah[0].'/ws/'.$koneksi.'.php?wsdl';
+            
+            $temp_uri = explode('-', $uri);
+            $new_uri = $temp_uri[0].'/'.$temp_uri[1];
+            echo $new_uri;
+            
+            $this->session->set_userdata('ws',$url);
+            redirect(base_url().'index.php/'.$new_uri);
+            
+        } else {
+            redirect('ws');
+        }
     }
     
     public function logout()

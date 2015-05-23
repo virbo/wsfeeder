@@ -83,6 +83,7 @@
                     </tr>
                     <?php
                         $i=0+$offset;
+                        //echo $offset;
                         foreach ($listsrec as $key => $value) {
                             echo "<tr>
                                         <td>".++$i."</td>";
@@ -145,8 +146,9 @@
                 <div class="row">
                     <div class="col-md-6">
                         <?php
-                            $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
-                            $end = $this->pagination->cur_page * $this->pagination->per_page;
+                        
+                            //$offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
+                            //$end = $this->pagination->cur_page * $this->pagination->per_page;
                             
                             //echo "Showing ".$start.' - '.$end.' of '.$total.' result <br />'.$this->pagination->cur_page.'<br />'.$this->pagination->per_page;
                             echo "Showing ".$start.' - '.$end.' of '.$total.' results';
