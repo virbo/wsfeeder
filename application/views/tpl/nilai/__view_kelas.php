@@ -26,13 +26,14 @@
             <table class="table table-hover table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th width="10px">#</th>
                         <th>Program Studi</th>
                         <th>Semester</th>
                         <th>Kode MK</th>
                         <th>Mata Kuliah</th>
-                        <th>Kelas</th>
-                        <th>SKS</th>
+                        <th width="5px">Kelas</th>
+                        <th width="5px">SKS</th>
+                        <th width="5px">MHS KRS</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -80,6 +81,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     <?php
                         $i=0+$offset;
@@ -107,7 +109,17 @@
                                         echo "<td>".$dump_mk['result']['kode_mk']."</td>
                                               <td>".$dump_mk['result']['nm_mk']."</td>
                                               <td>".$value['nm_kls']."</td>
-                                              <td>".$value['sks_mk']."</td>
+                                              <td>".$value['sks_mk']."</td>";
+                                        
+                                        $filter_kls = "p.id_kls = '".$value['id_kls']."'";
+                                        $dump_kls = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        'nilai', $filter_kls, 
+                                                        '', '', 
+                                                        ''
+                                                     );
+                                        $count_krs = count($dump_kls['result']);
+                                        
+                                        echo "<td>".$count_krs."</td>
                                               <td>
                                                   <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_nilai/nilai/".$value['id_kls']."\" data-target=\"#modalku\">
                                                       <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span>

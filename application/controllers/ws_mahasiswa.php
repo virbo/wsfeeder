@@ -9,6 +9,7 @@ class Ws_mahasiswa extends CI_Controller {
     private $offset;
     private $tabel;
     private $tabel2;
+    private $tbl_pindah;
     //private $temp_result;
     
     public function __construct()
@@ -23,6 +24,7 @@ class Ws_mahasiswa extends CI_Controller {
             $this->offset = $this->config->item('offset');
             $this->tabel = 'mahasiswa';
             $this->tabel2 = 'mahasiswa_pt';
+            $this->tbl_pindah = 'nilai_transfer';
             
             $this->load->model('m_feeder','feeder');
             $this->load->helper('directory');
@@ -37,9 +39,49 @@ class Ws_mahasiswa extends CI_Controller {
         $this->view_mhs();
     }
     
-    public function tabview()
+    public function createcsv_nilai_pindahan($id_reg_pd='')
     {
-        tampil('mahasiswa/__mahasiswa_tab');
+        if (!empty($id_reg_pd)) {
+            $filter_nilai = "p.id_reg_pd='".$id_reg_pd."'";
+            $temp_nilai = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tbl_pindah, $filter_nilai, 
+                                                        $this->order, '', 
+                                                        ''
+                                                     );
+            
+            //var_dump($temp_nilai['result']);
+            $temp_jml = count($temp_nilai['result']);
+            if ($temp_jml==0) {
+                echo "Data 0";
+            } else {
+                echo "Data ada";
+            }
+            
+        } else {
+            echo "Cannot create CSV";
+        }
+    }
+    
+    public function view_nilai_pindah($id_reg_pd='')
+    {
+        if (!empty($id_reg_pd)) {
+            $filter_nilai = "p.id_reg_pd='".$id_reg_pd."'";
+            $temp_nilai = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tbl_pindah, $filter_nilai, 
+                                                        $this->order, '', 
+                                                        ''
+                                                     );
+            
+            //var_dump($temp_nilai['result']);
+            $temp_jml = count($temp_nilai['result']);
+            
+            $data['nilai_pindah'] = $temp_nilai['result'];
+            $data['jml'] = $temp_jml;
+            
+            $this->load->view('tpl/mahasiswa/__view_nilai_pindah',$data);
+        } else {
+            redirect('ws_mahasiswa');
+        }
     }
     
     public function view_mhs($offset=0)

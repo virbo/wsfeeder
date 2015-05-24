@@ -151,9 +151,9 @@
         $(document).ready(function(){
           $('a.modalButton').click(function(){
             var src = $(this).attr('data-src');
-            //$('#isi').load($(this).attr('data-src'));
+            
+            $('#isi').html('Loading, please wait...');
             $('#isi').load(src);
-            //return false;
           });
         });
     </script>
@@ -185,7 +185,7 @@
                 </div>
                 <div class="modal-body">
                     <!--iframe frameborder="0"></iframe-->
-                    <div id="isi">Loading..</div>
+                    <div id="isi"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -193,21 +193,5 @@
             </div>
         </div>
     </div>
-    <!--div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3 class="modal-title" id="myLargeModalLabel">Form</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="isi">Loading..</div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div-->
   </body>
 </html>

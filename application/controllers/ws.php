@@ -40,7 +40,6 @@ class Ws extends CI_Controller {
                     redirect(base_url());
                 } else {
                     $temp_token = $temp_proxy->GetToken($username, $password);
-
                     if ($temp_token=='ERROR: username/password salah') {
                         $this->session->set_flashdata('error',$temp_token);
                         redirect(base_url());
