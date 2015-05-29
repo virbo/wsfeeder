@@ -90,8 +90,6 @@ class Ws_mahasiswa extends CI_Controller {
                             );
                 $array[] = $temp_isi;
                 array_to_csv($array, $temp_mhs['result']['nipd'].'-'.$temp_mhs['result']['nm_pd'].'.csv');
-            } else {
-                echo "Data ".$temp_jml;
             }
             
         } else {
