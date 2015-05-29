@@ -43,7 +43,7 @@ class Welcome extends CI_Controller {
         $filter_sms= "id_sp = '".$temp_sp."'";
         $temp_prodi = $this->feeder->getrset($this->session->userdata('token'), 
                                                         'sms', $filter_sms, 
-                                                        '', '50', 
+                                                        '', $this->limit, 
                                                         ''
                                                      );
        // var_dump($temp_pt);

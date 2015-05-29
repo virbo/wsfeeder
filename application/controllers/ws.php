@@ -46,19 +46,20 @@ class Ws extends CI_Controller {
                     } else {
                         $filter_sp = "npsn = '".$username."'";
                         $temp_sp = $temp_proxy->getrecord($temp_token,'satuan_pendidikan',$filter_sp);
+                        $id_sp = $temp_sp['result']['id_sp'];
                         $sessi = array('login' => TRUE, 
                                         'ws' => $ws,
                                         'token' => $temp_token,
                                         'username' => $username,
                                         'password' => $password,
                                         'url' => base_url(),
-                                        'id_sp' => $temp_sp['result']['id_sp']);
+                                        'id_sp' => $id_sp);
                                         
                         $this->session->sess_expiration = '900'; //session expire 15 Minutes
                         $this->session->sess_expire_on_close = 'true';
                         
                         $this->session->set_userdata($sessi);
-                        redirect('welcome');
+                        redirect('welcome','refresh');
                     }
                 }
             }

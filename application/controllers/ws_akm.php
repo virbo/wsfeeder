@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Ws_nilai extends CI_Controller {
+class Ws_akm extends CI_Controller {
         
     //private $data;
     private $limit;
@@ -8,8 +8,6 @@ class Ws_nilai extends CI_Controller {
     private $order;
     private $offset;
     private $tabel;
-    private $tbl_nilai;
-    //private $temp_result;
     
     public function __construct()
     {
@@ -22,8 +20,7 @@ class Ws_nilai extends CI_Controller {
             $this->order = $this->config->item('order');
             $this->offset = $this->config->item('offset');
             //$this->tabel = 'nilai';
-            $this->tabel = 'kelas_kuliah';
-            $this->tbl_nilai = 'nilai';
+            $this->tabel = 'kuliah_mahasiswa';
             
             $this->load->model('m_feeder','feeder');
             $this->load->helper('directory');
@@ -35,71 +32,104 @@ class Ws_nilai extends CI_Controller {
     public function index()
     {
         //$this->tabview();
-        $this->kelas();
+        $this->akm();
+        
     }
     
-    public function createcsv($id_kls='')
+    public function akm($offset=0,$id_smt='')
     {
-        if (!$id_kls=='') {
-            
-            //ambil data nilai
-            $filter_kls = "p.id_kls = '".$id_kls."'";
-            $temp_nilai = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        $this->tbl_nilai, $filter_kls, 
-                                                        $this->order, '', 
-                                                        $this->offset
+        //$id_smt = '20131';
+        !empty($id_smt)?$tahuns=$id_smt:$tahuns='20141';
+        
+        $filter_smt = "id_smt='".$tahuns."'";
+        
+        $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tabel, $filter_smt, 
+                                                        $this->order, $this->limit, 
+                                                        $offset
                                                      );
-            $dumy_nilai = $temp_nilai['result'];
-            //var_dump($dumy_nilai);
-            
-            //ambil struktur tabel nilai
-            $temp_dic = $this->feeder->getdic($this->session->userdata('token'), $this->tbl_nilai);
-            $dumy_dic = $temp_dic['result'];
+                                                     
+        $temp_rec_count = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tabel, $filter_smt, 
+                                                        $this->order, '', 
+                                                        ''
+                                                     ); 
+        //var_dump($temp_rec_count);
+                                                     
+        //var_dump($temp_rec['result']);
+        $temp_count = count($temp_rec_count['result']);
+         
+        //echo $temp_count;
+        //
+        
+        //echo $start;
+        
+        $config['base_url'] = site_url('ws_akm/akm');
+        $config['total_rows'] = $temp_count;
+        $config['per_page'] = $this->limit;
+        $config['uri_segment'] = 3;
+        $this->pagination->initialize($config);
+        $data['pagination'] = $this->pagination->create_links();
+        
+        $data['offset'] = $offset;
+        $data['total'] = $temp_count;
+        $data['id_smt'] = $tahuns;
+        $data['listakm'] = $temp_rec['result'];
+        
+        $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
+        $data['start'] = $start;
+        $data['end'] = $this->pagination->cur_page * $this->pagination->per_page;
+        
+        tampil('akm/__akm_view',$data);
+    }
+    
+    public function createcsv($id_smt='')
+    {
+        if (!$id_smt=='') {
             
             $array = array();
-            //$header_nilai = array();
+            $temp_header = array('no_urut', 'nim_mhs', 'nm_mhs', 'semester', 'ips', 'ipk', 'sks_semester', 'sks_total', 'status_mhs');
+            $array[] = $temp_header;
             
+            $filter_smt = "id_smt='".$id_smt."'";
             
-            //$temp_header = array('id_kls', 'id_reg_pd', 'asal_data', 'nim', 'nm_mhs', 'nilai_angka', 'nilai_huruf', 'nilai_indeks');
-            //create header
-            /* automatic create header from database
-            foreach ($dumy_dic as $key => $value) {
-                $header_nilai[] = $value['column_name'];
-            }*/
-            $header_nilai = array('no_urut', 'id_kls', 'id_reg_pd','nim', 'nm_mhs', 'nilai_angka', 'nilai_huruf', 'nilai_indeks');
-            $array[] = $header_nilai;
-
-            //create content
+            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tabel, $filter_smt, 
+                                                        '', '', 
+                                                        ''
+                                                     );
+            //var_dump($temp_rec['result']);
             $i=0;
-            foreach ($dumy_nilai as $row)
-            {
-                //$content_nilai = array();
-                /* Automatic create content from database
-                 * foreach ($header_nilai as $header) {
-                    $content_nilai[] = $row[$header];
-                }*/
+            foreach ($temp_rec['result'] as $row) {
                 ++$i;
-                $filter_mhs_pt = "id_reg_pd = '".$row['id_reg_pd']."'";
-                $temp_mhs_pt = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_mhs_pt);
                 
-                $filter_mhs = "id_pd = '".$temp_mhs_pt['result']['id_pd']."'";
-                $temp_mhs = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa',$filter_mhs);
+                //get NPM Mahasiswa
+                $filter_nim = "id_reg_pd='".$row['id_reg_pd']."'";
+                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);
+                var_dump($dump_nim['result']);
+                //echo
                 
-                $content_nilai = array($i,
-                                       $row['id_kls'],
-                                       $row['id_reg_pd'],
-                                       $temp_mhs_pt['result']['nipd'],
-                                       $temp_mhs['result']['nm_pd'],
-                                       $row['nilai_angka'],
-                                       $row['nilai_huruf'],
-                                       $row['nilai_indeks']
-                                );
-                $array[] = $content_nilai;
+                //get nama mahasiswa
+                /*$filter_nma = "id_reg_pd='".$row['id_reg_pd']."'";
+                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);*/
+                
+                //$filter_smt = "id_reg_pd='".$row['id_reg_pd']."'";
+                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);
+                $content = array($i,
+                                $dump_nim['result']['nipd'],
+                                $dump_nim['result']['nm_pd'],
+                                $id_smt,
+                                $row['ips'],
+                                $row['ipk'],
+                                $row['sks_smt'],
+                                $row['sks_total'],
+                                $row['id_stat_mhs']
+                ); 
+                $array[] = $content;
             }
-            //$array[] = $header_nilai;
-            array_to_csv($array, $id_kls.'.csv');
-            //var_dump($array);
             
+            //var_dump($array);                                         
+           // array_to_csv($array, $id_kls.'.csv');
         } else {
             echo "Cannot create CSV";
         }
@@ -140,7 +170,7 @@ class Ws_nilai extends CI_Controller {
                 $temp_result = $this->feeder->updaterset($this->session->userdata('token'),$this->tbl_nilai,$array);
                 
                 $sukses_count = 0;
-                //$sukses_msg = '';
+                $sukses_msg = '';
                 $error_count = 0;
                 $error_msg = array();
                 $i=0;
@@ -224,14 +254,7 @@ class Ws_nilai extends CI_Controller {
                                               'nm_smt DESC', '10',''
                                              );                                            
         
-        
-        $temp_mk = $this->feeder->getrset($this->session->userdata('token'), 
-                                              'mata_kuliah', '', 
-                                              'id_mk ASC', '',''
-                                             );
         //pagination
-        //var_dump($temp_rec['result']);
-        
         $config['base_url'] = site_url('ws_nilai/kelas');
         $config['total_rows'] = $temp_count['result'];
         $config['per_page'] = $this->limit;
@@ -239,7 +262,6 @@ class Ws_nilai extends CI_Controller {
         $this->pagination->initialize($config);
         //
         $data['pagination'] = $this->pagination->create_links();
-        //$data['offset'] = $offset;
         $data['offset'] = $offset;
         //$data['listsdic'] = $temp_dic;
         $data['listsrec'] = $temp_rec['result'];
@@ -248,12 +270,7 @@ class Ws_nilai extends CI_Controller {
         $data['tabel'] = $this->tabel;
         $data['listprodi'] = $temp_prodi['result'];
         $data['semester'] = $temp_semester['result'];
-        $data['mk'] = $temp_mk['result'];
         //var_dump($temp_semester['result']);
-        
-        $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
-        $data['start'] = $start;
-        $data['end'] = $this->pagination->cur_page * $this->pagination->per_page;
 
         tampil('nilai/__view_kelas',$data);
     }
@@ -268,57 +285,6 @@ class Ws_nilai extends CI_Controller {
         //} else {
             //echo "Error. Please back and try again";
         //}
-    }
-    
-    public function form_kelas()
-    {
-        //get prodi
-        $filter_sms = "id_sp = '".$this->session->userdata('id_sp')."'";
-        $temp_sms = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        'sms', $filter_sms, 
-                                                        '', '', 
-                                                        ''
-                                                     );
-        //var_dump($temp_sms['result]);
-        
-        
-        //get semester aktif
-        if (!empty($this->input->get('q'))) {
-            $temps_cari = $this->input->get('q');
-        } else {
-            $temps_cari = '20';
-        }
-            
-        //$filter_smt = "a_periode_aktif=1";
-        $filter_smt = "id_smt like '%".$temps_cari."%' AND a_periode_aktif=1";
-        $temp_smt = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        'semester', $filter_smt, 
-                                                        '', '', 
-                                                        ''
-                                                     );
-        //var_dump($temp_smt['result']);
-        
-        
-        $data['temp_sms'] = $temp_sms['result'];
-        $data['temp_smt'] = $temp_smt['result'];
-        
-        //$array = array();
-        foreach ($temp_smt['result'] as $row) {
-            $array = array('id' => $row['id_smt'], 'text' => $row['nm_smt']); 
-        }
-        
-        //var_dump($array);
-        
-        //echo json_encode($arrary);
-        echo json_encode($temp_smt['result']);
-        //$this->load->view('tpl/nilai/__form_kelas',$data);
-                                                     
-    }
-
-    public function form_kelas2()
-    {
-        $this->load->view('tpl/nilai/__form_kelas');
-                                                     
     }
 
     public function epsbed()
@@ -354,5 +320,5 @@ class Ws_nilai extends CI_Controller {
 
 }
 
-/* End of file ws_nilai.php */
-/* Location: ./application/controllers/ws_nilai.php */
+/* End of file ws_akm.php */
+/* Location: ./application/controllers/ws_akm.php */

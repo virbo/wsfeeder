@@ -16,6 +16,7 @@
     <!-- Custom styles for this template -->
     <link href="<?php echo base_url();?>assets/css/template.css" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/select2.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -125,6 +126,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="<?php echo base_url();?>assets/js/jquery.js"></script>
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url();?>assets/js/select2.full.min.js"></script>
     <script>
       $('#btn_sandbox').on('click', function () {
         var sandbox = $(this).attr('data-src');

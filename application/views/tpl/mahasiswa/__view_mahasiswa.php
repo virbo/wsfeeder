@@ -14,20 +14,21 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_csv" data-target="#modalku">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Upload data CSV
+                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)
                 </a>
-                <a href="javascript:void();" class="modalButton btn btn-warning" data-toggle="modal" data-src="<?php echo base_url();?>index.php/welcome/listdir/mahasiswa" data-target="#modalku">
+                <!--a href="javascript:void();" class="modalButton btn btn-warning" data-toggle="modal" data-src="<?php echo base_url();?>index.php/welcome/listdir/mahasiswa" data-target="#modalku">
                     <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Struktur tabel
-                </a>
+                </a-->
                 <a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info">
-                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download File CSV
+                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Daftar Mahasiswa (CSV File)
                 </a>
             </div>
             <div class="panel-body">
-                <h4>Daftar Kelas Perkuliahan Setiap Semester Per Kelas.</h4>
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk melihat Daftar Asli Nilai Mahasiswa.<br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk Mendownload Daftar Nilai Mahasiswa.<br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload File CSV</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.
+                <h4>Daftar Mahasiswa</h4>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-danger" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Nilai Pindahan <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai pindahan mahasiswa<br /><br />
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-info" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Nilai Mahasiswa <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai mahasiswa/aktivitas perkuliahan mahasiswa<br /><br />
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)</a> untuk mengupload data mahasiswa<br /><br />
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-info"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Data Mahasiswa (CSV File)</a> untuk mendownload format daftar mahasiswa<br /><br />
             </div>
             <table class="table table-hover table-striped table-bordered">
                 <thead>
@@ -89,18 +90,41 @@
                                                             <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_mahasiswa/view_nilai_pindah/".$row['id_reg_pd']."\" data-target=\"#modalku\">
                                                                 Lihat Nilai Pindahan
                                                             </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href=\"".base_url()."index.php/ws_mahasiswa/createcsv_nilai_pindahan/".$row['id_reg_pd']."\">
-                                                                Download Daftar Nilai (CSV)
-                                                            </a>
-                                                        </li>
-                                                        <li><a href=\"#\">Upload Nilai Pindahan (CSV)</a></li>
-                                                    </ul>
-                                                </div>";
-                                            }
-                                                
-                                     echo "</td>
+                                                        </li>";
+                                                        
+                                                        $filter_np = "p.id_reg_pd='".$row['id_reg_pd']."'";
+                                                        $temp_nilai = $this->feeder->getrset($this->session->userdata('token'), 
+                                                                                'nilai_transfer', $filter_np, 
+                                                                                '', '', 
+                                                                                ''
+                                                                             );
+                                                        $temp_jml = count($temp_nilai['result']);
+                                                        //echo $temp_jml;
+                                                        if ($temp_jml==0) {
+                                                            echo "<li>
+                                                                    <a href=\"".base_url()."index.php/ws_mahasiswa/createcsv_nilai_pindahan/".$row['id_reg_pd']."\">
+                                                                        Download Daftar Nilai (CSV)
+                                                                    </a>
+                                                                </li>
+                                                                <li><a href=\"#\">Upload Nilai Pindahan (CSV)</a></li>";
+                                                        }
+                                                echo "</ul>
+                                                </div> ";
+                                            }   
+                                     echo "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"...\">
+                                                <button type=\"button\" class=\"btn btn-default dropdown-toggle btn-info\" data-toggle=\"dropdown\" aria-expanded=\"false\">
+                                                    <span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> Nilai Mahasiswa <span class=\"caret\"></span>
+                                                </button>
+                                                <ul class=\"dropdown-menu\" role=\"menu\">
+                                                    <li>
+                                                        <a>KRS/Nilai Semester-AKM</a>
+                                                    </li>
+                                                    <li>
+                                                        <a>Upload Nilai-AKM</a>
+                                                    </li>
+                                                </ul>
+                                           </div>
+                                           </td>
                                       </tr>";
                             }    
                         }

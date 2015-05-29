@@ -51,10 +51,47 @@ class Ws_mahasiswa extends CI_Controller {
             
             //var_dump($temp_nilai['result']);
             $temp_jml = count($temp_nilai['result']);
+            
+           
+            $filter_mhs = "id_reg_pd='".$id_reg_pd."'";
+            $temp_mhs = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_mhs);
+            
+            //var_dump($temp_mhs['result']);
+            
+            $array = array();
+            $temp_header = array('nim',
+                                 'nm_mhs',
+                                 'id_reg_pd',
+                                 'kode_mk_asal',
+                                 'nm_mk_asal',
+                                 'sks_asal',
+                                 'nilai_huruf_asal',
+                                 'kode_mk_diakui',
+                                 'nm_mk_diakui',
+                                 'nilai_huruf_diakui',
+                                 'nilai_angka_diakui',
+                                 'sks_diakui'
+                            );
+            $array[] = $temp_header;                
             if ($temp_jml==0) {
-                echo "Data 0";
+                //echo "Data 0";
+                $temp_isi = array($temp_mhs['result']['nipd'],
+                                  $temp_mhs['result']['nm_pd'],
+                                  $temp_mhs['result']['id_reg_pd'],
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  '',
+                                  ''  
+                            );
+                $array[] = $temp_isi;
+                array_to_csv($array, $temp_mhs['result']['nipd'].'-'.$temp_mhs['result']['nm_pd'].'.csv');
             } else {
-                echo "Data ada";
+                echo "Data ".$temp_jml;
             }
             
         } else {

@@ -14,22 +14,25 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url(); ?>index.php/ws_nilai/form_csv/" data-target="#modalku" title="Upload file CSV">
-                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload File CSV
+                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Nilai (CSV)
                 </a>
+                <!--a href="javascript:void();" class="modalButton btn btn-info" data-toggle="modal" data-src="<?php echo base_url(); ?>index.php/ws_nilai/form_kelas2/" data-target="#modalku" title="Tambah Kelas">
+                    <span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> Tambah Kelas
+                </a-->
             </div>
             <div class="panel-body">
                 <h4>Daftar Kelas Perkuliahan Setiap Semester Per Kelas.</h4>
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk melihat Daftar Asli Nilai Mahasiswa.<br />
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk Mendownload Daftar Nilai Mahasiswa.<br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload File CSV</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Nilai (CSV)</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.
             </div>
             <table class="table table-hover table-striped table-bordered">
                 <thead>
                     <tr>
                         <th width="10px">#</th>
-                        <th>Program Studi</th>
-                        <th>Semester</th>
-                        <th>Kode MK</th>
+                        <th width="180px">Program Studi</th>
+                        <th width="180px">Semester</th>
+                        <th width="100px">Kode MK</th>
                         <th>Mata Kuliah</th>
                         <th width="5px">Kelas</th>
                         <th width="5px">SKS</th>
@@ -68,13 +71,23 @@
                                  ?>
                             </select>
                         </td>
-                        <td colspan="2">
+                        <td colspan="2" style="width: auto;">
                             <form class="form-horizontal">
                             <div class="input-group">
-                              <input type="text" class="form-control" name="nm_mk" placeholder="Cari Mata Kuliah, Kode Mata Kuliah...">
+                              <!--input type="text" class="form-control" name="nm_mk" placeholder="Cari Mata Kuliah, Kode Mata Kuliah...">
                               <span class="input-group-btn">
                                 <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                              </span>
+                              </span-->
+                              <select class="form-control" id="id_mk" name="id_mk">
+                                  <option value="" selected >Semua Mata Kuliah</option>
+                                  <?php
+                                    foreach ($mk as $row) {
+                                        //echo $value['nm_smt'].'<br />';
+                                        echo "<option value=\"".$row['id_mk']."\">".$row['kode_mk']." - ".$row['nm_mk']." (".$row['sks_mk']." SKS)</option>";
+                                        
+                                    }
+                                 ?>
+                              </select>
                             </div>
                             </form>
                         </td>
@@ -125,9 +138,9 @@
                                                       <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span>
                                                   </a>&nbsp;
                                                   <a href=\"".base_url()."index.php/ws_nilai/createcsv/".$value['id_kls']."\" title=\"Download file CSV\"><span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span></a>&nbsp;
-                                                  <a href=\"#expand".$i."\" data-src=\"".base_url()."index.php/ws_nilai/epsbed\" class=\"epsbed".$i."\" data-toggle=\"collapse\" aria-expanded=\"false\" aria-controls=\"expand\">
+                                                  <!--a href=\"#expand".$i."\" data-src=\"".base_url()."index.php/ws_nilai/epsbed\" class=\"epsbed".$i."\" data-toggle=\"collapse\" aria-expanded=\"false\" aria-controls=\"expand\">
                                                       <span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\">
-                                                  </a>
+                                                  </a-->
                                               </td>
                                 </tr>
                                 <tr class=\"collapse\" id=\"expand".$i."\">
