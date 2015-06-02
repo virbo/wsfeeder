@@ -39,6 +39,13 @@ class Ws_nilai extends CI_Controller {
             $this->load->helper('directory');
             $this->load->helper('csv');
             //$this->load->library('upload');
+            
+            //inisial config upload
+            $config['upload_path'] = $this->config->item('upload_path');
+            $config['allowed_types'] = $this->config->item('upload_tipe');
+            $config['max_size'] = $this->config->item('upload_max_size');
+            
+            $this->load->library('upload',$config);
         }
     }
     
@@ -117,11 +124,6 @@ class Ws_nilai extends CI_Controller {
     
     public function extractcsv()
     {
-        $config['upload_path'] = $this->config->item('upload_path');
-        $config['allowed_types'] = $this->config->item('upload_tipe');
-        $config['max_size'] = $this->config->item('upload_max_size');
-        
-        $this->load->library('upload',$config);
         if (!$this->upload->do_upload()) {
             echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
         } else {

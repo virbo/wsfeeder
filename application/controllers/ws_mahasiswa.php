@@ -246,12 +246,6 @@ class Ws_mahasiswa extends CI_Controller {
     
     public function test_csv()
     {
-        /*$config['upload_path'] = $this->config->item('upload_path');
-        $config['allowed_types'] = $this->config->item('upload_tipe');
-        $config['max_size'] = $this->config->item('upload_max_size');
-        
-        $this->load->library('upload',$config);*/
-        
         if (!$this->upload->do_upload()) {
             echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
         } else {
@@ -364,11 +358,6 @@ class Ws_mahasiswa extends CI_Controller {
                                                      );
         $data['prodi'] = $temp_prodi['result'];
         
-        $config['upload_path'] = $this->config->item('upload_path');
-        $config['allowed_types'] = $this->config->item('upload_tipe');
-        $config['max_size'] = $this->config->item('upload_max_size');
-        
-        $this->load->library('upload',$config);
         
         if (!$this->upload->do_upload()) {
             //echo $this->upload->display_errors().'<br />';
