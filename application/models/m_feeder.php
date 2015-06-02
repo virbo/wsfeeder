@@ -36,26 +36,19 @@
        }
        
        function insertrset($token, $table, $records) {
-           //return $this->ws_proxy->GetRecord($token, $table, $filter);
            return $this->ws_proxy->InsertRecordset($token, $table, json_encode($records));
-           //$this->ws_proxy->InsertRecordset($token, $table, json_encode($records));
        }
        
        function insertrecord($token, $table, $records) {
-           //$proxy->InsertRecord($token, $table, json_encode($record));
            return $this->ws_proxy->InsertRecord($token, $table, json_encode($records));
-           //$this->ws_proxy->InsertRecord($token, $table, json_encode($records));
        }
        
        function update($token,$table,$records) {
            return $this->ws_proxy->UpdateRecord($token,$table,json_encode($records));
-           //$result = $proxy->UpdateRecord($token,$table,json_encode($record));
-           //$result = $proxy->UpdateRecord($token, $table, json_encode($record));
        }
        
        function updaterset($token,$table,$records) {
            return $this->ws_proxy->UpdateRecordset($token, $table, json_encode($records));
-           //$result = $proxy->UpdateRecordset($token, $table, json_encode($records));
        }
        
        function count_all($token,$table) {

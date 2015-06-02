@@ -54,7 +54,8 @@ class Ws extends CI_Controller {
                         $this->session->set_flashdata('error',$temp_token);
                         redirect(base_url());
                     } else {
-                        $filter_sp = "npsn = '".$username."'";
+                        $temp_npsn = substr($username, 0,6);
+                        $filter_sp = "npsn = '".$temp_npsn."'";
                         $temp_sp = $temp_proxy->getrecord($temp_token,'satuan_pendidikan',$filter_sp);
                         $id_sp = $temp_sp['result']['id_sp'];
                         $sessi = array('login' => TRUE, 
