@@ -44,7 +44,7 @@
                     <tr>
                         <td></td>
                         <td>
-                            <select class="form-control" id="prodi" name="prodi">
+                            <!--select class="form-control" id="prodi" name="prodi">
                                 <option value="" selected>Semua Prodi</option>
                                 <?php
                                     foreach ($listprodi as $key => $value) {
@@ -57,10 +57,10 @@
                                         echo "<option value=\"".$value['id_sms']."\">".$dumy_jenjang['nm_jenj_didik']." ".$value['nm_lemb']."</option>";
                                     }
                                 ?>
-                            </select>
+                            </select-->
                         </td>
                         <td>
-                            <select class="form-control" id="prodi" name="semester">
+                            <!--select class="form-control" id="prodi" name="semester">
                                  <option value="" selected >Semua Semester</option>
                                  <?php
                                     foreach ($semester as $key => $value) {
@@ -69,15 +69,11 @@
                                         
                                     }
                                  ?>
-                            </select>
+                            </select-->
                         </td>
                         <td colspan="2" style="width: auto;">
-                            <form class="form-horizontal">
+                            <!--form class="form-horizontal">
                             <div class="input-group">
-                              <!--input type="text" class="form-control" name="nm_mk" placeholder="Cari Mata Kuliah, Kode Mata Kuliah...">
-                              <span class="input-group-btn">
-                                <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                              </span-->
                               <select class="form-control" id="id_mk" name="id_mk">
                                   <option value="" selected >Semua Mata Kuliah</option>
                                   <?php
@@ -89,7 +85,7 @@
                                  ?>
                               </select>
                             </div>
-                            </form>
+                            </form-->
                         </td>
                         <td></td>
                         <td></td>

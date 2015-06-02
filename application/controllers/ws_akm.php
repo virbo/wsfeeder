@@ -1,5 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * WS Client Feeder Aktivitas Kuliah Mahasiswa Module
+ * 
+ * @author      Yusuf Ayuba
+ * @copyright   2015
+ * @Url         http://jago.link
+ * @Github      https://github.com/virbo/wsfeeder
+ * 
+ */
+ 
 class Ws_akm extends CI_Controller {
         
     //private $data;

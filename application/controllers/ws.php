@@ -1,5 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * WS Client Feeder Ws Module
+ * 
+ * @author      Yusuf Ayuba
+ * @copyright   2015
+ * @Url         http://jago.link
+ * @Github      https://github.com/virbo/wsfeeder
+ * 
+ */
+ 
 class Ws extends CI_Controller {
     
     public function __construct()

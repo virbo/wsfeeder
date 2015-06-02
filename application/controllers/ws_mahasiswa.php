@@ -1,5 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * WS Client Feeder Mahasiswa Module
+ * 
+ * @author      Yusuf Ayuba
+ * @copyright   2015
+ * @Url         http://jago.link
+ * @Github      https://github.com/virbo/wsfeeder
+ * 
+ */
+ 
 class Ws_mahasiswa extends CI_Controller {
         
     //private $data;
@@ -30,6 +40,13 @@ class Ws_mahasiswa extends CI_Controller {
             $this->load->helper('directory');
             $this->load->helper('csv');
             //$this->load->library('upload');
+            
+            //inisial config upload
+            $config['upload_path'] = $this->config->item('upload_path');
+            $config['allowed_types'] = $this->config->item('upload_tipe');
+            $config['max_size'] = $this->config->item('upload_max_size');
+            
+            $this->load->library('upload',$config);
         }
     }
     
@@ -37,6 +54,84 @@ class Ws_mahasiswa extends CI_Controller {
     {
         //$this->tabview();
         $this->view_mhs();
+    }
+    
+    public function extractcsv_nilai_pindahan()
+    {
+        if (!$this->upload->do_upload()) {
+            echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
+        } else {
+            $file_data = $this->upload->data();
+            //var_dump($file_data);
+            $file_path = $this->config->item('upload_path').$file_data['file_name'];
+            //echo $file_path;
+            $csv_array = $this->csvimport->get_array($file_path);
+            //var_dump($csv_array);
+            if ($csv_array) {
+                $temp_data = array();
+                foreach ($csv_array as $row) {
+                    $id_reg_pd = $row['id_reg_pd'];
+                    //echo $id_reg_pd;
+                    $kode_mk_diakui = $row['kode_mk_diakui'];
+                    //echo $kode_mk_diakui;
+                    //$filter_mk = "kode_mk like '%".$kode_mk_diakui."%'";
+                    $filter_mk = "kode_mk ='".$kode_mk_diakui."'";
+                    $temp_mk = $this->feeder->getrecord($this->session->userdata('token'),'mata_kuliah',$filter_mk);
+                    
+                    $temp_data[] = array('id_reg_pd' => $row['id_reg_pd'],
+                                             'id_mk' => $temp_mk['result']['id_mk'],
+                                      'kode_mk_asal' => $row['kode_mk_asal'],
+                                        'nm_mk_asal' => $row['nm_mk_asal'],
+                                          'sks_asal' => $row['sks_asal'],
+                                        'sks_diakui' => $row['sks_diakui'],
+                                  'nilai_huruf_asal' => $row['nilai_huruf_asal'],
+                                'nilai_huruf_diakui' => $row['nilai_huruf_diakui'],
+                                'nilai_angka_diakui' => $row['nilai_angka_diakui'] 
+                    );
+                }
+                //var_dump($temp_data);
+                $temp_result = $this->feeder->insertrset($this->session->userdata['token'], $this->tbl_pindah, $temp_data);
+                //var_dump($temp_result);
+                
+                $sukses_count = 0;
+                $error_count = 0;
+                $error_msg = array();
+                $i=0;
+                
+                foreach ($temp_result['result'] as $key) {
+                    ++$i;
+                    if ($key['error_desc']==NULL) {
+                        ++$sukses_count;
+                    } else {
+                        ++$error_count;
+                        $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
+                    }
+                }
+                
+                if ((!$sukses_count==0) || (!$error_count==0)) {
+                    echo "<div class=\"alert alert-warning\" role=\"alert\">
+                                    Results (total ".$i." baris data):<br /><font color=\"#3c763d\">".$sukses_count." Nilai Pindahan berhasil ditambah</font><br />
+                                    <font color=\"#ce4844\" >".$error_count." data error (tidak bisa ditambah) </font>";
+                                    if (!$error_count==0) {
+                                        echo "<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">
+                                          Detail error
+                                        </a>";    
+                                    }
+                                    //echo "<br />Total: ".$i." baris data";
+                                    echo "<div class=\"collapse\" id=\"collapseExample\">";
+                                        foreach ($error_msg as $pesan) {
+                                            echo "<div class=\"bs-callout bs-callout-danger\">
+                                                    ".$pesan."
+                                                  </div><br />";    
+                                        } 
+                                        
+                                    echo "</div>
+                                </div>";
+                }
+            } else {
+                echo "<div class=\"bs-callout bs-callout-danger\">Error: Tidak dapat mengekstrak file CSV. Silahkan dicoba kembali</div>";
+            }
+        }
     }
     
     public function createcsv_nilai_pindahan($id_reg_pd='')
@@ -59,9 +154,9 @@ class Ws_mahasiswa extends CI_Controller {
             //var_dump($temp_mhs['result']);
             
             $array = array();
-            $temp_header = array('nim',
+            $temp_header = array('id_reg_pd',
+                                 'nim',
                                  'nm_mhs',
-                                 'id_reg_pd',
                                  'kode_mk_asal',
                                  'nm_mk_asal',
                                  'sks_asal',
@@ -75,9 +170,9 @@ class Ws_mahasiswa extends CI_Controller {
             $array[] = $temp_header;                
             if ($temp_jml==0) {
                 //echo "Data 0";
-                $temp_isi = array($temp_mhs['result']['nipd'],
+                $temp_isi = array($temp_mhs['result']['id_reg_pd'],
+                                  $temp_mhs['result']['nipd'],
                                   $temp_mhs['result']['nm_pd'],
-                                  $temp_mhs['result']['id_reg_pd'],
                                   '',
                                   '',
                                   '',
@@ -151,16 +246,15 @@ class Ws_mahasiswa extends CI_Controller {
     
     public function test_csv()
     {
-        $config['upload_path'] = $this->config->item('upload_path');
+        /*$config['upload_path'] = $this->config->item('upload_path');
         $config['allowed_types'] = $this->config->item('upload_tipe');
         $config['max_size'] = $this->config->item('upload_max_size');
         
-        $this->load->library('upload',$config);
+        $this->load->library('upload',$config);*/
         
         if (!$this->upload->do_upload()) {
             echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
         } else {
-            //echo "Ada isinya";
             $file_data = $this->upload->data();
             //var_dump($file_data);
             
@@ -168,86 +262,86 @@ class Ws_mahasiswa extends CI_Controller {
             
             $csv_array = $this->csvimport->get_array($file_path);
             //var_dump($csv_array);
-            //$offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
+
             if ($csv_array) {
                 $temp = array();
                 foreach ($csv_array as $value) {
                     !empty($value['nisn'])?'nisn'.$value['nisn']: 'nisn';
                     
                     $temp_data = array('nm_pd' => $value['nm_pd'], 
-                                    'jk' => $value['jk'],
-                                    'nisn' => !empty($value['nisn'])?$value['nisn']:'',
-                                    'nik' => !empty($value['nik'])?$value['nik']:'',
-                                    'tmpt_lahir' => !empty($value['tmpt_lahir'])?$value['tmpt_lahir']:'',
+                                          'jk' => $value['jk'],
+                                        'nisn' => !empty($value['nisn'])?$value['nisn']:'',
+                                         'nik' => !empty($value['nik'])?$value['nik']:'',
+                                  'tmpt_lahir' => !empty($value['tmpt_lahir'])?$value['tmpt_lahir']:'',
                                     'tgl_lahir'=> date("Y-m-d", strtotime($value['tgl_lahir'])),
                                     'id_agama' => !empty($value['id_agama'])?$value['id_agama']:'98',
-                                    'id_kk' => !empty($value['id_kk'])?$value['id_kk']:'0',
-                                    //'id_sp' => $value['id_sp'],
-                                    'id_sp' => $this->session->userdata('id_sp'),
-                                    //'jln' => !empty($value['jln'])?$value['jln']:'',
-                                    //'rt' => !empty($value['rt'])?$value['rt']:'',
-                                    //'rw' => !empty($value['rw'])?$value['rw']:'',
+                                       'id_kk' => !empty($value['id_kk'])?$value['id_kk']:'0',
+                                     //'id_sp' => $value['id_sp'],
+                                       'id_sp' => $this->session->userdata('id_sp'),
+                                       //'jln' => !empty($value['jln'])?$value['jln']:'',
+                                        //'rt' => !empty($value['rt'])?$value['rt']:'',
+                                        //'rw' => !empty($value['rw'])?$value['rw']:'',
                                     //'nm_dsn' => !empty($value['nm_dsn'])?$value['nm_dsn']:'',
-                                    'ds_kel' => !empty($value['ds_kel'])?$value['ds_kel']:'',
-                                    'id_wil' => !empty($value['id_wil'])?$value['id_wil']:'000000',
-                                    //'kode_pos' => !empty($value['kode_pos'])?$value['kode_pos']:'',
-                                    //'id_jns_tinggal' => !empty($value['id_jns_tinggal'])?$value['id_jns_tinggal']:'0',
-                                    //'id_alat_transport' => !empty($value['id_alat_transport'])?$value['id_alat_transport']:'0',
-                                    //'telepon_rumah' => !empty($value['telepon_rumah'])?$value['telepon_rumah']:'',
-                                    //'telepon_seluler' => !empty($value['telepon_seluler'])?$value['telepon_seluler']:'',
-                                    //'email' => !empty($value['email'])?$value['email']:'',
-                                    'a_terima_kps' => !empty($value['a_terima_kps'])?$value['a_terima_kps']:'0',
+                                      'ds_kel' => !empty($value['ds_kel'])?$value['ds_kel']:'',
+                                      'id_wil' => !empty($value['id_wil'])?$value['id_wil']:'000000',
+                                  //'kode_pos' => !empty($value['kode_pos'])?$value['kode_pos']:'',
+                            //'id_jns_tinggal' => !empty($value['id_jns_tinggal'])?$value['id_jns_tinggal']:'0',
+                         //'id_alat_transport' => !empty($value['id_alat_transport'])?$value['id_alat_transport']:'0',
+                             //'telepon_rumah' => !empty($value['telepon_rumah'])?$value['telepon_rumah']:'',
+                           //'telepon_seluler' => !empty($value['telepon_seluler'])?$value['telepon_seluler']:'',
+                                     //'email' => !empty($value['email'])?$value['email']:'',
+                                'a_terima_kps' => !empty($value['a_terima_kps'])?$value['a_terima_kps']:'0',
                                     //'no_kps' => !empty($value['no_kps'])?$value['no_kps']:'',
-                                    'stat_pd' => !empty($value['stat_pd'])?$value['stat_pd']:'',
-                                    //'nm_ayah' => !empty($value['nm_ayah'])?$value['nm_ayah']:'',
-                                    //'tgl_lahir_ayah'=> !empty($value['tgl_lahir_ayah'])?date("Y-m-d", strtotime($value['tgl_lahir_ayah'])):'9999-12-30',
-                                    //'id_jenjang_pendidikan_ayah' => !empty($value['id_jenjang_pendidikan_ayah'])?$value['id_jenjang_pendidikan_ayah']:'',
-                                    //'id_pekerjaan_ayah' => !empty($value['id_pekerjaan_ayah'])?$value['id_pekerjaan_ayah']:'',
-                                    //'id_penghasilan_ayah' => !empty($value['id_penghasilan_ayah'])?$value['id_penghasilan_ayah']:'',
-                                    'id_kebutuhan_khusus_ayah' => !empty($value['id_kebutuhan_khusus_ayah'])?$value['id_kebutuhan_khusus_ayah']:'0',
-                                    'nm_ibu_kandung' => !empty($value['nm_ibu_kandung'])?$value['nm_ibu_kandung']:'',
-                                    //'tgl_lahir_ibu'=> !empty($value['tgl_lahir_ibu'])?date("Y-m-d", strtotime($value['tgl_lahir_ibu'])):'9999-12-30',
-                                    //'id_jenjang_pendidikan_ibu' => !empty($value['id_jenjang_pendidikan_ibu'])?$value['id_jenjang_pendidikan_ibu']:'',
-                                    //'id_penghasilan_ibu' => !empty($value['id_penghasilan_ibu'])?$value['id_penghasilan_ibu']:'',
-                                    //'id_pekerjaan_ibu' => !empty($value['id_pekerjaan_ibu'])?$value['id_pekerjaan_ibu']:'',
-                                    'id_kebutuhan_khusus_ibu' => !empty($value['id_kebutuhan_khusus_ibu'])?$value['id_kebutuhan_khusus_ibu']:'0',
-                                    //'nm_wali' => !empty($value['nm_wali'])?$value['nm_wali']:'',
-                                    //'tgl_lahir_wali'=> !empty($value['tgl_lahir_wali'])?date("Y-m-d", strtotime($value['tgl_lahir_wali'])):'9999-12-30',
-                                    //'id_jenjang_pendidikan_wali' => !empty($value['id_jenjang_pendidikan_wali'])?$value['id_jenjang_pendidikan_wali']:'',
-                                    //'id_pekerjaan_wali' => !empty($value['id_pekerjaan_wali'])?$value['id_pekerjaan_wali']:'',
-                                    //'id_penghasilan_wali' => !empty($value['id_penghasilan_wali'])?$value['id_penghasilan_wali']:'',
-                                    'kewarganegaraan' => !empty($value['kewarganegaraan'])?$value['kewarganegaraan']:'',
+                                     'stat_pd' => !empty($value['stat_pd'])?$value['stat_pd']:'',
+                                   //'nm_ayah' => !empty($value['nm_ayah'])?$value['nm_ayah']:'',
+                             //'tgl_lahir_ayah'=> !empty($value['tgl_lahir_ayah'])?date("Y-m-d", strtotime($value['tgl_lahir_ayah'])):'9999-12-30',
+                //'id_jenjang_pendidikan_ayah' => !empty($value['id_jenjang_pendidikan_ayah'])?$value['id_jenjang_pendidikan_ayah']:'',
+                         //'id_pekerjaan_ayah' => !empty($value['id_pekerjaan_ayah'])?$value['id_pekerjaan_ayah']:'',
+                       //'id_penghasilan_ayah' => !empty($value['id_penghasilan_ayah'])?$value['id_penghasilan_ayah']:'',
+                    'id_kebutuhan_khusus_ayah' => !empty($value['id_kebutuhan_khusus_ayah'])?$value['id_kebutuhan_khusus_ayah']:'0',
+                              'nm_ibu_kandung' => !empty($value['nm_ibu_kandung'])?$value['nm_ibu_kandung']:'',
+                              //'tgl_lahir_ibu'=> !empty($value['tgl_lahir_ibu'])?date("Y-m-d", strtotime($value['tgl_lahir_ibu'])):'9999-12-30',
+                 //'id_jenjang_pendidikan_ibu' => !empty($value['id_jenjang_pendidikan_ibu'])?$value['id_jenjang_pendidikan_ibu']:'',
+                        //'id_penghasilan_ibu' => !empty($value['id_penghasilan_ibu'])?$value['id_penghasilan_ibu']:'',
+                          //'id_pekerjaan_ibu' => !empty($value['id_pekerjaan_ibu'])?$value['id_pekerjaan_ibu']:'',
+                     'id_kebutuhan_khusus_ibu' => !empty($value['id_kebutuhan_khusus_ibu'])?$value['id_kebutuhan_khusus_ibu']:'0',
+                                   //'nm_wali' => !empty($value['nm_wali'])?$value['nm_wali']:'',
+                             //'tgl_lahir_wali'=> !empty($value['tgl_lahir_wali'])?date("Y-m-d", strtotime($value['tgl_lahir_wali'])):'9999-12-30',
+                //'id_jenjang_pendidikan_wali' => !empty($value['id_jenjang_pendidikan_wali'])?$value['id_jenjang_pendidikan_wali']:'',
+                         //'id_pekerjaan_wali' => !empty($value['id_pekerjaan_wali'])?$value['id_pekerjaan_wali']:'',
+                       //'id_penghasilan_wali' => !empty($value['id_penghasilan_wali'])?$value['id_penghasilan_wali']:'',
+                             'kewarganegaraan' => !empty($value['kewarganegaraan'])?$value['kewarganegaraan']:'',
                                     
                                     //tabel reg_pd
-                                    //'regpd_id_sms' => $value['regpd_id_sms'],
-                                    'regpd_id_sms' => $this->input->post('prodi', TRUE),
-                                    //'regpd_id_pd' => $row['id_pd'],
-                                    //'regpd_id_sp' => $value['regpd_id_sp'],
-                                    'regpd_id_sp' => $this->session->userdata('id_sp'),
-                                    'regpd_id_jns_daftar' => !empty($value['regpd_id_jns_daftar'])?$value['regpd_id_jns_daftar']:'',
-                                    'regpd_nipd' => !empty($value['regpd_nipd'])?$value['regpd_nipd']:'',
-                                    'regpd_tgl_masuk_sp'=> !empty($value['regpd_tgl_masuk_sp'])?date("Y-m-d", strtotime($value['regpd_tgl_masuk_sp'])):'',
-                                    'regpd_id_jns_keluar' => !empty($value['regpd_id_jns_keluar'])?$value['regpd_id_jns_keluar']:'',
-                                    'regpd_tgl_keluar'=> !empty($value['regpd_tgl_keluar'])?date("Y-m-d", strtotime($value['regpd_tgl_keluar'])):'',
-                                    //'regpd_ket' => !empty($value['regpd_ket'])?$value['regpd_ket']:'',
-                                   // 'regpd_skhun' => !empty($value['regpd_skhun'])?$value['regpd_skhun']:'',
-                                   // 'regpd_a_pernah_paud' => !empty($value['regpd_a_pernah_paud'])?$value['regpd_a_pernah_paud']:'0',
-                                    //'regpd_a_pernah_tk' => !empty($value['regpd_a_pernah_tk'])?$value['regpd_a_pernah_tk']:'0',
-                                    'regpd_mulai_smt' => !empty($value['regpd_mulai_smt'])?$value['regpd_mulai_smt']:'',
-                                    'regpd_sks_diakui' => !empty($value['regpd_sks_diakui'])?$value['regpd_sks_diakui']:'',
-                                    //'regpd_jalur_skripsi' => !empty($value['regpd_jalur_skripsi'])?$value['regpd_jalur_skripsi']:'0',
-                                    'regpd_judul_skripsi' => !empty($value['regpd_judul_skripsi'])?$value['regpd_judul_skripsi']:'',
-                                    //'regpd_bln_awal_bimbingan' => !empty($value['regpd_bln_awal_bimbingan'])?date("Y-m-d", strtotime($value['regpd_bln_awal_bimbingan'])):'9999-12-30', 
-                                    //'regpd_bln_akhir_bimbingan' => !empty($value['regpd_bln_akhir_bimbingan'])?date("Y-m-d", strtotime($value['regpd_bln_akhir_bimbingan'])):'9999-12-30',
-                                    'regpd_sk_yudisium' => !empty($value['regpd_sk_yudisium'])?$value['regpd_sk_yudisium']:'',
-                                    'regpd_tgl_sk_yudisium'=> !empty($value['regpd_tgl_sk_yudisium'])?date("Y-m-d", strtotime($value['regpd_tgl_sk_yudisium'])):'9999-12-30',
-                                    'regpd_ipk' => !empty($value['regpd_ipk'])?$value['regpd_ipk']:'',
-                                    'regpd_no_seri_ijazah' => !empty($value['regpd_no_seri_ijazah'])?$value['regpd_no_seri_ijazah']:'',
-                                    //'regpd_sert_prof' => !empty($value['regpd_sert_prof'])?$value['regpd_sert_prof']:'',
-                                    //'regpd_a_pindah_mhs_asing' => !empty($value['regpd_a_pindah_mhs_asing'])?$value['regpd_a_pindah_mhs_asing']:'0',
-                                    //'regpd_nm_pt_asal' => !empty($value['regpd_nm_pt_asal'])?$value['regpd_nm_pt_asal']:'',
-                                    //'regpd_nm_prodi_asal' => !empty($value['regpd_nm_prodi_asal'])?$value['regpd_nm_prodi_asal']:'',
-                             );
+                              //'regpd_id_sms' => $value['regpd_id_sms'],
+                                'regpd_id_sms' => $this->input->post('prodi', TRUE),
+                               //'regpd_id_pd' => $row['id_pd'],
+                               //'regpd_id_sp' => $value['regpd_id_sp'],
+                                 'regpd_id_sp' => $this->session->userdata('id_sp'),
+                         'regpd_id_jns_daftar' => !empty($value['regpd_id_jns_daftar'])?$value['regpd_id_jns_daftar']:'',
+                                  'regpd_nipd' => !empty($value['regpd_nipd'])?$value['regpd_nipd']:'',
+                           'regpd_tgl_masuk_sp'=> !empty($value['regpd_tgl_masuk_sp'])?date("Y-m-d", strtotime($value['regpd_tgl_masuk_sp'])):'',
+                         'regpd_id_jns_keluar' => !empty($value['regpd_id_jns_keluar'])?$value['regpd_id_jns_keluar']:'',
+                             'regpd_tgl_keluar'=> !empty($value['regpd_tgl_keluar'])?date("Y-m-d", strtotime($value['regpd_tgl_keluar'])):'',
+                                 //'regpd_ket' => !empty($value['regpd_ket'])?$value['regpd_ket']:'',
+                              // 'regpd_skhun' => !empty($value['regpd_skhun'])?$value['regpd_skhun']:'',
+                      // 'regpd_a_pernah_paud' => !empty($value['regpd_a_pernah_paud'])?$value['regpd_a_pernah_paud']:'0',
+                         //'regpd_a_pernah_tk' => !empty($value['regpd_a_pernah_tk'])?$value['regpd_a_pernah_tk']:'0',
+                             'regpd_mulai_smt' => !empty($value['regpd_mulai_smt'])?$value['regpd_mulai_smt']:'',
+                            'regpd_sks_diakui' => !empty($value['regpd_sks_diakui'])?$value['regpd_sks_diakui']:'',
+                       //'regpd_jalur_skripsi' => !empty($value['regpd_jalur_skripsi'])?$value['regpd_jalur_skripsi']:'0',
+                         'regpd_judul_skripsi' => !empty($value['regpd_judul_skripsi'])?$value['regpd_judul_skripsi']:'',
+                  //'regpd_bln_awal_bimbingan' => !empty($value['regpd_bln_awal_bimbingan'])?date("Y-m-d", strtotime($value['regpd_bln_awal_bimbingan'])):'9999-12-30', 
+                 //'regpd_bln_akhir_bimbingan' => !empty($value['regpd_bln_akhir_bimbingan'])?date("Y-m-d", strtotime($value['regpd_bln_akhir_bimbingan'])):'9999-12-30',
+                           'regpd_sk_yudisium' => !empty($value['regpd_sk_yudisium'])?$value['regpd_sk_yudisium']:'',
+                        'regpd_tgl_sk_yudisium'=> !empty($value['regpd_tgl_sk_yudisium'])?date("Y-m-d", strtotime($value['regpd_tgl_sk_yudisium'])):'9999-12-30',
+                                   'regpd_ipk' => !empty($value['regpd_ipk'])?$value['regpd_ipk']:'',
+                        'regpd_no_seri_ijazah' => !empty($value['regpd_no_seri_ijazah'])?$value['regpd_no_seri_ijazah']:'',
+                           //'regpd_sert_prof' => !empty($value['regpd_sert_prof'])?$value['regpd_sert_prof']:'',
+                  //'regpd_a_pindah_mhs_asing' => !empty($value['regpd_a_pindah_mhs_asing'])?$value['regpd_a_pindah_mhs_asing']:'0',
+                          //'regpd_nm_pt_asal' => !empty($value['regpd_nm_pt_asal'])?$value['regpd_nm_pt_asal']:'',
+                       //'regpd_nm_prodi_asal' => !empty($value['regpd_nm_prodi_asal'])?$value['regpd_nm_prodi_asal']:'',
+                     );
                      $hasil = $this->feeder->insertrecord($this->session->userdata['token'], $this->tabel, $temp_data);        
                 }
                 //$proxy->InsertRecord($token, $table, json_encode($record));
@@ -501,6 +595,16 @@ class Ws_mahasiswa extends CI_Controller {
         $data['prodi'] = $temp_prodi['result'];                                             
         //tampil('mahasiswa/__mahasiswa_csv_form',$data);
         $this->load->view('tpl/mahasiswa/__form_csv',$data);
+    }
+    
+    public function form_csv_nilai_pindahan($id_reg_pd)
+    {
+        if (!empty($id_reg_pd)) {
+            $data['id_reg_pd'] = $id_reg_pd;
+            $this->load->view('tpl/mahasiswa/__form_csv_nilai_pindahan',$data);
+        } else {
+            redirect('ws_mahasiswa');
+        }
     }
     
 }

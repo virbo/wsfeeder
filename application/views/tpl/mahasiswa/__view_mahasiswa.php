@@ -106,7 +106,11 @@
                                                                         Download Daftar Nilai (CSV)
                                                                     </a>
                                                                 </li>
-                                                                <li><a href=\"#\">Upload Nilai Pindahan (CSV)</a></li>";
+                                                                <li>
+                                                                    <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_mahasiswa/form_csv_nilai_pindahan/".$row['id_reg_pd']."\" data-target=\"#modalku\">
+                                                                        Upload Nilai Pindahan (CSV)
+                                                                    </a>
+                                                                </li>";
                                                         }
                                                 echo "</ul>
                                                 </div> ";

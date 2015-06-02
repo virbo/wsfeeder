@@ -1,5 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * WS Client Feeder Nilai Mahasiswa Module
+ * 
+ * @author      Yusuf Ayuba
+ * @copyright   2015
+ * @Url         http://jago.link
+ * @Github      https://github.com/virbo/wsfeeder
+ * 
+ */
+ 
 class Ws_nilai extends CI_Controller {
         
     //private $data;
@@ -121,17 +131,17 @@ class Ws_nilai extends CI_Controller {
             
             if ($csv_array) {
                 $array = array();
-                $field_key = 'id_kls';
+                //$field_key = 'id_kls';
                 
-                $header = array('nilai_angka', 'nilai_huruf', 'nilai_indeks');
+                //$header = array('nilai_angka', 'nilai_huruf', 'nilai_indeks');
                 
                 foreach ($csv_array as $key) {
                     $temp_key = array('id_kls' => $key['id_kls'],
-                                    'id_reg_pd' => $key['id_reg_pd']
+                                   'id_reg_pd' => $key['id_reg_pd']
                                 );
                     $temp_data = array('nilai_angka' => $key['nilai_angka'],
-                                    'nilai_huruf' => $key['nilai_huruf'],
-                                    'nilai_indeks' => $key['nilai_indeks']
+                                       'nilai_huruf' => $key['nilai_huruf'],
+                                      'nilai_indeks' => $key['nilai_indeks']
                     );
                     
                     $array[] = array('key'=>$temp_key,'data'=>$temp_data);
@@ -175,6 +185,8 @@ class Ws_nilai extends CI_Controller {
                                     echo "</div>
                                 </div>";
                 }
+            } else {
+                echo "<div class=\"bs-callout bs-callout-danger\">Error: Tidak dapat mengekstrak file CSV. Silahkan dicoba kembali</div>";
             }
         }
     }
@@ -203,6 +215,8 @@ class Ws_nilai extends CI_Controller {
     
     public function kelas($offset=0)
     {
+        //$temp_reg = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        //var_dump($temp_reg);
         $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
                                                         $this->tabel, $this->filter, 
                                                         'id_smt DESC', $this->limit, 
@@ -211,24 +225,25 @@ class Ws_nilai extends CI_Controller {
         $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel);
         
         //list prodi
-        $temp_sp = $this->session->userdata('id_sp');
+        /*$temp_sp = $this->session->userdata('id_sp');
         $filter_sms= "id_sp = '".$temp_sp."'";
         $temp_prodi = $this->feeder->getrset($this->session->userdata('token'), 
                                               'sms', $filter_sms, 
                                               '', '30',''
-                                             );
+                                             );*/
         
         //semester
-        $temp_semester = $this->feeder->getrset($this->session->userdata('token'), 
+        /*$temp_semester = $this->feeder->getrset($this->session->userdata('token'), 
                                               'semester', '', 
                                               'nm_smt DESC', '10',''
-                                             );                                            
+                                             );*/                                            
         
         
-        $temp_mk = $this->feeder->getrset($this->session->userdata('token'), 
+        //mata kuliah
+        /*$temp_mk = $this->feeder->getrset($this->session->userdata('token'), 
                                               'mata_kuliah', '', 
                                               'id_mk ASC', '',''
-                                             );
+                                             );*/
         //pagination
         //var_dump($temp_rec['result']);
         
@@ -246,9 +261,9 @@ class Ws_nilai extends CI_Controller {
         $data['total'] = $temp_count['result'];
         $data['url_add'] = 'index.php/ws_nilai/csv';
         $data['tabel'] = $this->tabel;
-        $data['listprodi'] = $temp_prodi['result'];
+        /*$data['listprodi'] = $temp_prodi['result'];
         $data['semester'] = $temp_semester['result'];
-        $data['mk'] = $temp_mk['result'];
+        $data['mk'] = $temp_mk['result'];*/
         //var_dump($temp_semester['result']);
         
         $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
