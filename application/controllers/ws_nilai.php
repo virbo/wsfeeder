@@ -300,7 +300,7 @@ class Ws_nilai extends CI_Controller {
         
         
         //get semester aktif
-        if (!empty($this->input->get('q'))) {
+        if ($this->input->get('q')!='') {
             $temps_cari = $this->input->get('q');
         } else {
             $temps_cari = '20';
