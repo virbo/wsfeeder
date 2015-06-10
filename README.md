@@ -16,7 +16,7 @@
 
 * **Menggunakan webserver Sendiri:** *Extract file hasil download dan tempatkan di folder utama webserver (contoh htdocs, root, www, etc.)*
 
-* **Menggunakan webserver Feeder:** *Extract file hasil download dan tempatkan di folder C:\Program Files\PDDIKTI\dataweb. Untuk menjalankannya ketikkan alamat [http://localhost:nomor_port_feeder/nama_folder_hasil_extract](http://localhost:nomor_port_feeder/nama_folder_hasil_extract)*
+* **Menggunakan webserver Feeder:** *Extract file hasil download dan tempatkan di folder C:\Program Files\PDDIKTI\dataweb*
 
 
 ##Petunjuk Menjalankan:
