@@ -57,7 +57,7 @@ class Welcome extends CI_Controller {
                                                         ''
                                                      );
        // var_dump($temp_pt);
-        
+        $data['ses_id_sp'] = $temp_sp;
         $data['listprodi'] = $temp_prodi['result'];
         tampil('__listprodi',$data);
     }
@@ -133,6 +133,41 @@ class Welcome extends CI_Controller {
     {
         $this->session->sess_destroy();
         redirect('ws');
+    }
+    
+    public function setting()
+    {
+        $temp_npsn = read_file('setting.ini');
+        
+        if ($this->input->post()) {
+            $temp_pt = $this->input->post('inputNpsn', TRUE);
+            $this->form_validation->set_rules('inputNpsn', 'Kode PT', 'trim|required');
+            
+            if($this->form_validation->run() == TRUE) {
+                $temp_result = write_file('setting.ini', $temp_pt);
+                if ($temp_result) {
+                        
+                    $filter_sp = "npsn = '".$temp_pt."'";
+                    $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],'satuan_pendidikan',$filter_sp);
+                    var_dump($temp_sp);
+                    if ($temp_sp['result']) {
+                        $id_sp = $temp_sp['result']['id_sp'];
+                    } else {
+                        $id_sp = '0';
+                    }
+                    
+                    $this->session->set_userdata('id_sp',$id_sp);
+                    $this->session->set_flashdata('sukses','Kode PT berhasil diupdate');
+                    redirect(base_url().'index.php/welcome/setting');
+                } else {
+                    $this->session->set_flashdata('error','Kode PT tidak bisa diupdate. File setting tidak bisa ditulisi');
+                    redirect(base_url().'index.php/welcome/setting');
+                }
+            }
+        }
+        
+        $data['npsn'] = $temp_npsn;
+        tampil('welcome/__setting',$data);
     }
 }
 
