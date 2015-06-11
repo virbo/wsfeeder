@@ -20,7 +20,7 @@
  */
 if ( ! function_exists('array_to_csv'))
 {
-	function array_to_csv($array, $download = "")
+	function array_to_csv($array, $download = "", $separasi=",")
 	{
 		if ($download != "")
 		{	
@@ -34,7 +34,8 @@ if ( ! function_exists('array_to_csv'))
 		foreach ($array as $line)
 		{
 			$n++;
-			if ( ! fputcsv($f, $line))
+			//if ( ! fputcsv($f, $line))
+			if ( ! fputcsv($f, $separasi==','?$line:$line,$separasi))
 			{
 				show_error("Can't write line $n: $line");
 			}
