@@ -9,7 +9,9 @@
 
 * Pastikan folder upload dalam keadaan bisa ditulis (writeable).
 
+* Pastikan folder temps dalam keadaan bisa ditulis (writeable).
 
+* Pastikan file setting.ini dalam keadaan bisa ditulis (writeable).
 
 ##Petunjuk Installasi:
 
