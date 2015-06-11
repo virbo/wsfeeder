@@ -16,10 +16,8 @@
                 <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_csv" data-target="#modalku">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)
                 </a>
-                <!--a href="javascript:void();" class="modalButton btn btn-warning" data-toggle="modal" data-src="<?php echo base_url();?>index.php/welcome/listdir/mahasiswa" data-target="#modalku">
-                    <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Struktur tabel
-                </a-->
-                <a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info">
+                <a href="javascript:void();" class="modalButton btn btn-info" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_createcsv_mhs" data-target="#modalku">
+                <!--a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info"-->
                     <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Daftar Mahasiswa (CSV File)
                 </a>
             </div>
