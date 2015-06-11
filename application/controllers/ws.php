@@ -54,10 +54,19 @@ class Ws extends CI_Controller {
                         $this->session->set_flashdata('error',$temp_token);
                         redirect(base_url());
                     } else {
-                        $temp_npsn = substr($username, 0,6);
+                        //$temp_npsn = substr($username, 0,6);
+                        $temp_npsn = read_file('setting.ini');
+                        //echo $temp_npsn;
+                        
                         $filter_sp = "npsn = '".$temp_npsn."'";
                         $temp_sp = $temp_proxy->getrecord($temp_token,'satuan_pendidikan',$filter_sp);
-                        $id_sp = $temp_sp['result']['id_sp'];
+                        //var_dump($temp_sp);
+                        if ($temp_sp['result']) {
+                            $id_sp = $temp_sp['result']['id_sp'];
+                        } else {
+                            $id_sp = '0';
+                        }
+
                         $sessi = array('login' => TRUE, 
                                         'ws' => $ws,
                                         'token' => $temp_token,
@@ -70,7 +79,9 @@ class Ws extends CI_Controller {
                         $this->session->sess_expire_on_close = 'true';
                         
                         $this->session->set_userdata($sessi);
-                        redirect('welcome','refresh');
+                        
+                        //var_dump($sessi);
+                        redirect('welcome');
                     }
                 }
             }
