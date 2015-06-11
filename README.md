@@ -6,12 +6,9 @@
 
 
 * Aplikasi ini dikembangkan menggunakan PHP versi 5.6.3. Untuk versi dibawahnya belum pernah diujicobakan.
-
-* Pastikan folder upload dalam keadaan bisa ditulis (writeable).
-
-* Pastikan folder temps dalam keadaan bisa ditulis (writeable).
-
-* Pastikan file setting.ini dalam keadaan bisa ditulis (writeable).
+* Pastikan folder **upload** dalam keadaan bisa ditulis (writeable).
+* Pastikan folder **temps** dalam keadaan bisa ditulis (writeable).
+* Pastikan file **setting.ini** dalam keadaan bisa ditulis (writeable).
 
 ##Petunjuk Installasi:
 
