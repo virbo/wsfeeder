@@ -64,7 +64,7 @@ $autoload['libraries'] = array('session','nusoap_lib','form_validation','paginat
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','page_template','form');
+$autoload['helper'] = array('url','page_template','form','file');
 
 
 /*
