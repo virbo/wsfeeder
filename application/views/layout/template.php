@@ -82,6 +82,7 @@
                               </a>
                               <ul class=\"dropdown-menu\" role=\"menu\">
                                 <li><a href=\"".base_url()."index.php/welcome/token/".$this->uri->segment(1)."-".$this->uri->segment(2)."\">Generate Token</a></li>
+                                <li><a href=\"".base_url()."index.php/welcome/setting\">Setting</a></li>
                                 <li class=\"divider\"></li>
                                 <li><a href=\"".base_url()."index.php/welcome/logout\"><span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span> Logout</a></li>
                               </ul>
