@@ -54,8 +54,8 @@
                                     <li><a href=\"".base_url()."index.php/ws_mahasiswa\">Mahasiswa</a></li>
                                     <li><a href=\"".base_url()."index.php/ws_nilai\">Nilai Semester Mahasiswa</a></li>
                                     <li><a href=\"".base_url()."index.php/ws_akm\">Aktivitas Kuliah Mahasiswa</a></li>
-                                    <li><a href=\"".base_url()."index.php/#\">Aktivitas Mengajar Dosen</a></li>
-                                    <li><a href=\"".base_url()."index.php/ws_npindahan\">Nilai Mahasiswa Pindahan</a></li>
+                                    <!--li><a href=\"".base_url()."index.php/#\">Aktivitas Mengajar Dosen</a></li>
+                                    <li><a href=\"".base_url()."index.php/ws_npindahan\">Nilai Mahasiswa Pindahan</a></li-->
                                     <li><a href=\"".base_url()."index.php/ws_wilayah\">Wilayah</a></li>
                                     <!--li class=\"divider\"></li>
                                     <li><a href=\"#\">Separated link</a></li>
