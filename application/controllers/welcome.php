@@ -17,6 +17,7 @@ class Welcome extends CI_Controller {
     private $filter;
     private $order;
     private $offset;
+    private $table;
     
 	public function __construct()
     {
@@ -28,6 +29,7 @@ class Welcome extends CI_Controller {
             $this->filter = $this->config->item('filter');
             $this->order = $this->config->item('order');
             $this->offset = $this->config->item('offset');
+            $this->table = 'sms';
             $this->load->model('m_feeder','feeder');
         }
     }
@@ -46,20 +48,38 @@ class Welcome extends CI_Controller {
        
     }
     
-    public function listprodi()
+    public function listprodi($offset=0)
     {
         $temp_sp = $this->session->userdata('id_sp');
                 
         $filter_sms= "id_sp = '".$temp_sp."'";
         $temp_prodi = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        'sms', $filter_sms, 
+                                                        $this->table, $filter_sms, 
                                                         '', $this->limit, 
-                                                        ''
+                                                        $offset
                                                      );
-       // var_dump($temp_pt);
-        $data['ses_id_sp'] = $temp_sp;
+        
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->table);
+        //var_dump($temp_count);
+        
+        //pagination
+        $config['base_url'] = site_url('welcome/listprodi');
+        $config['total_rows'] = $temp_count['result'];
+        $config['per_page'] = $this->limit;
+        $config['uri_segment'] = 3;
+        $this->pagination->initialize($config);
+        //
+        $data['pagination'] = $this->pagination->create_links();
+        $data['offset'] = $offset;
         $data['listprodi'] = $temp_prodi['result'];
-        tampil('__listprodi',$data);
+        $data['total'] = $temp_count['result'];
+        $data['ses_id_sp'] = $temp_sp;
+
+        $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
+        $data['start'] = $start;
+        $data['end'] = $this->pagination->cur_page * $this->pagination->per_page;
+
+        tampil('welcome/__listprodi',$data);
     }
     
     public function listdir($table='')

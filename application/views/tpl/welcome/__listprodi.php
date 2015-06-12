@@ -62,3 +62,13 @@
         </table>        
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <?php
+            echo "Showing ".$start.' - '.$end.' of '.$total.' results';
+        ?>
+    </div>
+    <div class="col-md-6" style="margin-top: -15px;" >
+        <?php echo $pagination;?>
+    </div>
+</div>
