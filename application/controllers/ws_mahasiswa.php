@@ -53,7 +53,7 @@ class Ws_mahasiswa extends CI_Controller {
     public function index()
     {
         //$this->tabview();
-        $this->view_mhs();
+        $this->view();
     }
     
     public function extractcsv_nilai_pindahan()
@@ -214,20 +214,48 @@ class Ws_mahasiswa extends CI_Controller {
         }
     }
     
-    public function view_mhs($offset=0)
+    public function view($offset=0)
     {
-        $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        $this->tabel2, $this->filter, 
+        $temp_mhs = $this->input->post('nm_mhs');
+        
+        if ($temp_mhs=='') {
+            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                            $this->tabel2, $this->filter, 
+                                                            'nipd ASC', $this->limit, 
+                                                            $offset
+                                                         );
+            
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2);
+            $temp_jml = $temp_count['result']; 
+            
+            $data['temp_mhs'] = ''; 
+        } else {
+            $filter_nim = "nipd like '%".$temp_mhs."%'";
+            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $this->tabel2, $filter_nim, 
                                                         'nipd ASC', $this->limit, 
                                                         $offset
                                                      );
-        //var_dump($temp_rec['result']);
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2);
-        //var_dump($temp_count['result']);  
+            if (!$temp_rec['result']) {
+                $filter_mhs = "nm_pd like '%".$temp_mhs."%'";
+                $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                            $this->tabel2, $filter_mhs, 
+                                                            'nipd ASC', $this->limit, 
+                                                            $offset
+                                                         );
+                //var_dump($temp_rec_mhs);
+                //$filter_id_pd = "id_pd='".$."'";
+            }
+            //var_dump($temp_rec['result']);
+            $temp_jml = count($temp_rec['result']);
+            $data['temp_mhs'] = $temp_mhs;
+        }
+        
+          
         
         //pagination
-        $config['base_url'] = site_url('ws_mahasiswa/view_mhs');
-        $config['total_rows'] = $temp_count['result'];
+        $config['base_url'] = site_url('ws_mahasiswa/view');
+        $config['total_rows'] = $temp_jml;
         $config['per_page'] = $this->limit;
         $config['uri_segment'] = 3;
         $this->pagination->initialize($config);
@@ -235,7 +263,7 @@ class Ws_mahasiswa extends CI_Controller {
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
         $data['listsrec'] = $temp_rec['result'];
-        $data['total'] = $temp_count['result'];
+        $data['total'] = $temp_jml;
 
         $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
         $data['start'] = $start;
