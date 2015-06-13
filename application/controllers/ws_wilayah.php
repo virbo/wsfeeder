@@ -62,7 +62,20 @@ class Ws_wilayah extends CI_Controller {
                                                             $this->order, $this->limit, 
                                                             $offset
                                                          );
+            
+            if (!$temp_rec['result']) {
+                $filter_id_wil = "id_wil like '%".$temp_wil."%'";
+                $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                                $this->tabel, $filter_id_wil, 
+                                                                $this->order, $this->limit, 
+                                                                $offset
+                                                             );    
+            }
+            
+                                                         
             $temp_jml = count($temp_rec['result']);
+            
+            
             $data['temp_wil'] = $temp_wil;
         }
         
