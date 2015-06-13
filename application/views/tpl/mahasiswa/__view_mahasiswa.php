@@ -13,20 +13,58 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_csv" data-target="#modalku">
-                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)
-                </a>
-                <a href="javascript:void();" class="modalButton btn btn-info" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_createcsv_mhs" data-target="#modalku">
-                <!--a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info"-->
-                    <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Daftar Mahasiswa (CSV File)
-                </a>
+                <div class="row">
+                    <div class="col-md-8">
+                        <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_csv" data-target="#modalku">
+                            <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)
+                        </a>
+                        <a href="javascript:void();" class="modalButton btn btn-info" data-toggle="modal" data-src="<?php echo base_url();?>index.php/ws_mahasiswa/form_createcsv_mhs" data-target="#modalku">
+                        <!--a href="<?php echo base_url();?>index.php/ws_mahasiswa/createcsv" class="modalButton btn btn-info"-->
+                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Daftar Mahasiswa (CSV File)
+                        </a>
+                    </div>
+                    <div class="col-md-4" align="right">
+                        <?php
+                            $attributes = array('class' => 'form-inline');
+                            echo form_open('ws_mahasiswa/view',$attributes);
+                        ?>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="nm_mhs" placeholder="Search..." value="<?php echo $temp_mhs;?>">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning" type="submit"><i class="fa fa-search search-btn"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="panel-body">
-                <h4>Daftar Mahasiswa</h4>
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-danger" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Nilai Pindahan <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai pindahan mahasiswa<br /><br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-info" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Nilai Mahasiswa <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai mahasiswa/aktivitas perkuliahan mahasiswa<br /><br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)</a> untuk mengupload data mahasiswa<br /><br />
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-info"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Data Mahasiswa (CSV File)</a> untuk mendownload format daftar mahasiswa<br /><br />
+                
+                <!-- HELPER-->
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Petunjuk Pengoperasian <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <h4>Daftar Mahasiswa</h4>
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-danger" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Nilai Pindahan <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai pindahan mahasiswa<br /><br />
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-info" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Nilai Mahasiswa <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai mahasiswa/aktivitas perkuliahan mahasiswa<br /><br />
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)</a> untuk mengupload data mahasiswa<br /><br />
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-info"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Data Mahasiswa (CSV File)</a> untuk mendownload format daftar mahasiswa<br /><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END HELPER-->
+                
+                
+                
             </div>
             <table class="table table-hover table-striped table-bordered">
                 <thead>
