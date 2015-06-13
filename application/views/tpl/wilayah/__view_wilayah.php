@@ -17,8 +17,12 @@
                     $attributes = array('class' => 'form-inline');
                     echo form_open('ws_wilayah/view',$attributes);
                 ?>
-                    <input type="text" class="form-control" name="nm_wil" placeholder="Cari Wilayah" value="<?php echo $temp_wil;?>" /> 
-                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="nm_wil" placeholder="Search..." value="<?php echo $temp_wil;?>">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" type="submit"><i class="fa fa-search search-btn"></i></button>
+                        </span>
+                    </div>
                 </form>
             </div>
             <div class="panel-body">
