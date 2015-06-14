@@ -101,23 +101,28 @@
     </div> <!-- /container -->
     
     <div class="footer navbar-default navbar-fixed-bottom">
-      <div class="container-fluid" align="right">
-          <?php if ($this->session->userdata('login')) { ?>
-          <!--span class="label label-danger">
-                  <?php echo $this->session->userdata('username');?> | 
-                  <?php echo $this->session->userdata('ws');?> | 
-                  <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <a href="<?php echo base_url();?>index.php/welcome/logout">Logout</a>
-          </span-->
-          <?php
-                $temp_pecah = explode('/ws/', $this->session->userdata('ws'));
-                $temp_pecah2 = explode('.php?wsdl', $temp_pecah[1]);
-                //echo $temp_pecah[0];
-          ?>
-          <div class="btn-group btn-group-xs" role="group" aria-label="Switch Database">
-              <button type="button" id="btn_live" class="btn <?php echo $temp_pecah2['0']=='live'?"btn-success":"btn-default" ?>"  data-src="live" >Live <?php echo $temp_pecah2['0']=='live'?"(ON)":"(OFF)" ?></button>
-              <button type="button" id="btn_sandbox" class="btn <?php echo $temp_pecah2['0']=='sandbox'?"btn-danger":"btn-default" ?>"  data-src="sandbox" >Sandbox <?php echo $temp_pecah2['0']=='sandbox'?"(ON)":"(OFF)" ?></button>
-          </div>
-          <?php }?> 
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-6"><small>Page rendered in <strong>{elapsed_time}</strong> seconds</small></div>
+              <div class="col-md-6" align="right">
+                  <?php if ($this->session->userdata('login')) { ?>
+                  <!--span class="label label-danger">
+                          <?php echo $this->session->userdata('username');?> | 
+                          <?php echo $this->session->userdata('ws');?> | 
+                          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <a href="<?php echo base_url();?>index.php/welcome/logout">Logout</a>
+                  </span-->
+                  <?php
+                        $temp_pecah = explode('/ws/', $this->session->userdata('ws'));
+                        $temp_pecah2 = explode('.php?wsdl', $temp_pecah[1]);
+                        //echo $temp_pecah[0];
+                  ?>
+                  <div class="btn-group btn-group-xs" role="group" aria-label="Switch Database">
+                      <button type="button" id="btn_live" class="btn <?php echo $temp_pecah2['0']=='live'?"btn-success":"btn-default" ?>"  data-src="live" >Live <?php echo $temp_pecah2['0']=='live'?"(ON)":"(OFF)" ?></button>
+                      <button type="button" id="btn_sandbox" class="btn <?php echo $temp_pecah2['0']=='sandbox'?"btn-danger":"btn-default" ?>"  data-src="sandbox" >Sandbox <?php echo $temp_pecah2['0']=='sandbox'?"(ON)":"(OFF)" ?></button>
+                  </div>
+                  <?php }?>
+              </div>
+          </div> 
       </div>
     </div>
 
