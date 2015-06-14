@@ -43,8 +43,8 @@ class Welcome extends CI_Controller {
     {
         $temp_table = $this->feeder->listtable($this->session->userdata('token'));
         //$data['pagination'] = '';
-        $data['listtable'] = $temp_table;
-        tampil('__listtabel',$data);
+        $data['listtable'] = $temp_table['result'];
+        tampil('welcome/__listtabel',$data);
        
     }
     
