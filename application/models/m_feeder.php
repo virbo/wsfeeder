@@ -51,8 +51,8 @@
            return $this->ws_proxy->UpdateRecordset($token, $table, json_encode($records));
        }
        
-       function count_all($token,$table) {
-           return $this->ws_proxy->GetCountRecordSet($token, $table);
+       function count_all($token,$table,$filter) {
+           return $this->ws_proxy->GetCountRecordSet($token, $table, $filter);
        }
    }
    
