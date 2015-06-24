@@ -217,56 +217,43 @@ class Ws_nilai extends CI_Controller {
     
     public function kelas($offset=0)
     {
-        //$temp_reg = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        //var_dump($temp_reg);
-        $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        $this->tabel, $this->filter, 
-                                                        'id_smt DESC', $this->limit, 
-                                                        $offset
-                                                     );
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel);
+        $temp_mk = $this->input->post('mk');
         
-        //list prodi
-        /*$temp_sp = $this->session->userdata('id_sp');
-        $filter_sms= "id_sp = '".$temp_sp."'";
-        $temp_prodi = $this->feeder->getrset($this->session->userdata('token'), 
-                                              'sms', $filter_sms, 
-                                              '', '30',''
-                                             );*/
+        if ($temp_mk=='') {
+            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                            $this->tabel, $this->filter, 
+                                                            'id_smt DESC', $this->limit, 
+                                                            $offset
+                                                         );
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$this->filter);
+            $temp_jml = $temp_count['result'];
+            
+            $data['temp_mk'] = $temp_mk;  
+             
+        } else {
+            $filter_nm_mk = "nm_mk like '%".$temp_mk."%'";
+            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
+                                                            $this->tabel, $filter_nm_mk, 
+                                                            $this->order, $this->limit, 
+                                                            $offset
+                                                         );
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_nm_mk);
+            $temp_jml = $temp_count['result'];
+            $data['temp_mk'] = $temp_mk;
+        }
         
-        //semester
-        /*$temp_semester = $this->feeder->getrset($this->session->userdata('token'), 
-                                              'semester', '', 
-                                              'nm_smt DESC', '10',''
-                                             );*/                                            
-        
-        
-        //mata kuliah
-        /*$temp_mk = $this->feeder->getrset($this->session->userdata('token'), 
-                                              'mata_kuliah', '', 
-                                              'id_mk ASC', '',''
-                                             );*/
-        //pagination
-        //var_dump($temp_rec['result']);
         
         $config['base_url'] = site_url('ws_nilai/kelas');
-        $config['total_rows'] = $temp_count['result'];
+        $config['total_rows'] = $temp_jml;
         $config['per_page'] = $this->limit;
         $config['uri_segment'] = 3;
         $this->pagination->initialize($config);
         //
         $data['pagination'] = $this->pagination->create_links();
-        //$data['offset'] = $offset;
         $data['offset'] = $offset;
-        //$data['listsdic'] = $temp_dic;
         $data['listsrec'] = $temp_rec['result'];
-        $data['total'] = $temp_count['result'];
-        $data['url_add'] = 'index.php/ws_nilai/csv';
+        $data['total'] = $temp_jml;
         $data['tabel'] = $this->tabel;
-        /*$data['listprodi'] = $temp_prodi['result'];
-        $data['semester'] = $temp_semester['result'];
-        $data['mk'] = $temp_mk['result'];*/
-        //var_dump($temp_semester['result']);
         
         $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
         $data['start'] = $start;
@@ -287,57 +274,6 @@ class Ws_nilai extends CI_Controller {
         //}
     }
     
-    public function form_kelas()
-    {
-        //get prodi
-        $filter_sms = "id_sp = '".$this->session->userdata('id_sp')."'";
-        $temp_sms = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        'sms', $filter_sms, 
-                                                        '', '', 
-                                                        ''
-                                                     );
-        //var_dump($temp_sms['result]);
-        
-        
-        //get semester aktif
-        if ($this->input->get('q')!='') {
-            $temps_cari = $this->input->get('q');
-        } else {
-            $temps_cari = '20';
-        }
-            
-        //$filter_smt = "a_periode_aktif=1";
-        $filter_smt = "id_smt like '%".$temps_cari."%' AND a_periode_aktif=1";
-        $temp_smt = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        'semester', $filter_smt, 
-                                                        '', '', 
-                                                        ''
-                                                     );
-        //var_dump($temp_smt['result']);
-        
-        
-        $data['temp_sms'] = $temp_sms['result'];
-        $data['temp_smt'] = $temp_smt['result'];
-        
-        //$array = array();
-        foreach ($temp_smt['result'] as $row) {
-            $array = array('id' => $row['id_smt'], 'text' => $row['nm_smt']); 
-        }
-        
-        //var_dump($array);
-        
-        //echo json_encode($arrary);
-        echo json_encode($temp_smt['result']);
-        //$this->load->view('tpl/nilai/__form_kelas',$data);
-                                                     
-    }
-
-    public function form_kelas2()
-    {
-        $this->load->view('tpl/nilai/__form_kelas');
-                                                     
-    }
-
     public function epsbed()
     {
         $dir_dbf = "C:/DIKTI";
