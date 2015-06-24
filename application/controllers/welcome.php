@@ -59,9 +59,8 @@ class Welcome extends CI_Controller {
                                                         $offset
                                                      );
         
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->table,$this->filter);
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->table,$filter_sms);
         //var_dump($temp_count);
-        
         //pagination
         $config['base_url'] = site_url('welcome/listprodi');
         $config['total_rows'] = $temp_count['result'];
