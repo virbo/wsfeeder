@@ -50,8 +50,7 @@ class Ws_wilayah extends CI_Controller {
                                                             $this->order, $this->limit, 
                                                             $offset
                                                          );
-            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel);
-            
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$this->filter);
             $temp_jml = $temp_count['result'];
             
             $data['temp_wil'] = '';    
@@ -62,6 +61,8 @@ class Ws_wilayah extends CI_Controller {
                                                             $this->order, $this->limit, 
                                                             $offset
                                                          );
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_wil);
+            $temp_jml = $temp_count['result'];
             
             if (!$temp_rec['result']) {
                 $filter_id_wil = "id_wil like '%".$temp_wil."%'";
@@ -70,12 +71,10 @@ class Ws_wilayah extends CI_Controller {
                                                                 $this->order, $this->limit, 
                                                                 $offset
                                                              );    
+                $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_id_wil);
+                $temp_jml = $temp_count['result'];
             }
-            
-                                                         
-            $temp_jml = count($temp_rec['result']);
-            
-            
+            //$temp_jml = count($temp_rec['result']);
             $data['temp_wil'] = $temp_wil;
         }
         
