@@ -58,31 +58,32 @@ class Ws_akm extends CI_Controller {
                                                         $this->order, $this->limit, 
                                                         $offset
                                                      );
-                                                     
+        /*                                             
         $temp_rec_count = $this->feeder->getrset($this->session->userdata('token'), 
                                                         $this->tabel, $filter_smt, 
                                                         $this->order, '', 
                                                         ''
-                                                     ); 
+                                                     );*/ 
         //var_dump($temp_rec_count);
                                                      
         //var_dump($temp_rec['result']);
-        $temp_count = count($temp_rec_count['result']);
-         
+        //$temp_count = count($temp_rec_count['result']);
+         $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$this->filter);
+         $temp_jml = $temp_count['result'];
         //echo $temp_count;
         //
         
         //echo $start;
         
         $config['base_url'] = site_url('ws_akm/akm');
-        $config['total_rows'] = $temp_count;
+        $config['total_rows'] = $temp_jml;
         $config['per_page'] = $this->limit;
         $config['uri_segment'] = 3;
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         
         $data['offset'] = $offset;
-        $data['total'] = $temp_count;
+        $data['total'] = $temp_jml;
         $data['id_smt'] = $tahuns;
         $data['listakm'] = $temp_rec['result'];
         
