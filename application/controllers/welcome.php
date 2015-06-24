@@ -59,7 +59,7 @@ class Welcome extends CI_Controller {
                                                         $offset
                                                      );
         
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->table);
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->table,$this->filter);
         //var_dump($temp_count);
         
         //pagination
