@@ -100,7 +100,7 @@ class Welcome extends CI_Controller {
                                                         $this->order, $this->limit, 
                                                         $offset
                                                      );
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $tables);
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $tables,$this->filter);
         
         //pagination
         $config['base_url'] = site_url('welcome/view');
