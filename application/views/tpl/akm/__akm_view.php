@@ -16,6 +16,9 @@
                 <a href="javascript:void();" class="modalButton btn btn-success" data-toggle="modal" data-src="<?php echo base_url(); ?>index.php/ws_nilai/form_csv/" data-target="#modalku" title="Upload file CSV">
                     <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload File CSV
                 </a>
+                <a href="javascript:void();" class="modalButton btn btn-info" data-toggle="modal" data-src="<?php echo base_url(); ?>index.php/ws_nilai/form_csv/createcsv" data-target="#modalku" title="Upload file CSV">
+                    <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Download File CSV
+                </a>
             </div>
             <div class="panel-body">
                 <h4>Daftar Aktivitas Kuliah Mahasiswa</h4>
