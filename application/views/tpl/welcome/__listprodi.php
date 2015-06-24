@@ -32,7 +32,7 @@
                                     </td>
                               </tr>";
                     } else {
-                        $i=0;
+                        $i=0+$offset;
                         foreach ($listprodi as $key => $value) {
                             //$filter_jenjang = $value['id_jenj_didik'];
                             $filter_jenjang = "id_jenj_didik = ".$value['id_jenj_didik'];
