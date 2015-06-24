@@ -249,7 +249,7 @@ class Ws_akm extends CI_Controller {
                                                         'id_smt DESC', $this->limit, 
                                                         $offset
                                                      );
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel);
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$this->filter);
         
         //list prodi
         $temp_sp = $this->session->userdata('id_sp');
