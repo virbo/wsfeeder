@@ -225,7 +225,7 @@ class Ws_mahasiswa extends CI_Controller {
                                                             $offset
                                                          );
             
-            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2);
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2,$this->filter);
             $temp_jml = $temp_count['result']; 
             
             $data['temp_mhs'] = ''; 
@@ -236,6 +236,8 @@ class Ws_mahasiswa extends CI_Controller {
                                                         'nipd ASC', $this->limit, 
                                                         $offset
                                                      );
+            $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2,$filter_nim);
+            $temp_jml = $temp_count['result'];
             if (!$temp_rec['result']) {
                 $filter_mhs = "nm_pd like '%".$temp_mhs."%'";
                 $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
@@ -245,9 +247,12 @@ class Ws_mahasiswa extends CI_Controller {
                                                          );
                 //var_dump($temp_rec_mhs);
                 //$filter_id_pd = "id_pd='".$."'";
+                $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel2,$filter_mhs);
+                $temp_jml = $temp_count['result'];
             }
             //var_dump($temp_rec['result']);
-            $temp_jml = count($temp_rec['result']);
+            //$temp_jml = count($temp_rec['result']);
+            
             $data['temp_mhs'] = $temp_mhs;
         }
         
