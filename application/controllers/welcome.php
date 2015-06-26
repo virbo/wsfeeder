@@ -168,7 +168,7 @@ class Welcome extends CI_Controller {
                         
                     $filter_sp = "npsn = '".$temp_pt."'";
                     $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],'satuan_pendidikan',$filter_sp);
-                    var_dump($temp_sp);
+                    //var_dump($temp_sp);
                     if ($temp_sp['result']) {
                         $id_sp = $temp_sp['result']['id_sp'];
                     } else {
