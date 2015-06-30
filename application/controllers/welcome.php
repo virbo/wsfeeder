@@ -93,14 +93,22 @@ class Welcome extends CI_Controller {
     public function view($table='',$offset=0)
     {
         isset($table)?$tables=$table:$tables='mahasiswa';
+        
         $temp_dic = $this->feeder->getdic($this->session->userdata('token'), $tables);
         $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
                                                         $tables, $this->filter, 
                                                         $this->order, $this->limit, 
                                                         $offset
                                                      );
-        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $tables,$this->filter);
         
+        /*$temp_rec_count = $this->feeder->getrset($this->session->userdata('token'), 
+                                                        $tables, $this->filter, 
+                                                        $this->order, '', 
+                                                        $offset
+                                                     );*/                                             
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $tables,$this->filter);
+        //$temp_count = count($temp_rec_count['result']);
+        //var_dump($temp_count);
         //pagination
         $config['base_url'] = site_url('welcome/view');
         $config['total_rows'] = $temp_count['result'];
@@ -113,7 +121,7 @@ class Welcome extends CI_Controller {
         $data['tabel'] = $tables;
         $data['listsdic'] = $temp_dic;
         $data['listsrec'] = $temp_rec;
-        $data['total'] = $temp_count;
+        $data['total'] = $temp_count['result'];
         $this->load->view('tpl/__listrec',$data);
         
     }
