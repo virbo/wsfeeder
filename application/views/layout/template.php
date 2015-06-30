@@ -56,14 +56,42 @@
                                     <li><a href=\"".base_url()."index.php/ws_akm\">Aktivitas Kuliah Mahasiswa</a></li>
                                     <!--li><a href=\"".base_url()."index.php/#\">Aktivitas Mengajar Dosen</a></li>
                                     <li><a href=\"".base_url()."index.php/ws_npindahan\">Nilai Mahasiswa Pindahan</a></li-->
-                                    <li><a href=\"".base_url()."index.php/ws_wilayah\">Wilayah</a></li>
                                     <!--li class=\"divider\"></li>
                                     <li><a href=\"#\">Separated link</a></li>
                                     <li class=\"divider\"></li>
                                     <li><a href=\"#\">One more separated link</a></li-->
                                   </ul>
                                 </li>
-                                <li><a href=\"".base_url()."index.php/welcome/listtable\">List Tabel</a></li>
+                                <li class=\"dropdown\">
+                                  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-refresh\" aria-hidden=\"true\"></span> Epsbed <span class=\"caret\"></span></a>
+                                  <ul class=\"dropdown-menu\" role=\"menu\">
+                                    <li><a href=\"".base_url()."index.php/epsbed_mahasiswa\">Mahasiswa</a></li>
+                                    <li><a href=\"#\">Nilai Semester Mahasiswa</a></li>
+                                    <li><a href=\"#\">Aktivitas Kuliah Mahasiswa</a></li>
+                                    <li><a href=\"#\">Aktivitas Mengajar Dosen</a></li>
+                                    <li><a href=\"#\">Mahasiswa Lulus / Drop Out</a></li>
+                                    <!--li class=\"divider\"></li>
+                                    <li><a href=\"#\">Separated link</a></li>
+                                    <li class=\"divider\"></li>
+                                    <li><a href=\"#\">One more separated link</a></li-->
+                                  </ul>
+                                </li>
+                                <li class=\"dropdown\">
+                                  <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-th\" aria-hidden=\"true\"></span> Data Referensi <span class=\"caret\"></span></a>
+                                  <ul class=\"dropdown-menu\" role=\"menu\">
+                                    <li><a href=\"".base_url()."index.php/ref_agama\">Data Agama</a></li>
+                                    <li><a href=\"".base_url()."index.php/ref_kebutuhan\">Data Kebutuhan Khusus</a></li>
+                                    <li><a href=\"".base_url()."index.php/ref_pekerjaan\">Data Pekerjaan</a></li>
+                                    <li><a href=\"".base_url()."index.php/ref_penghasilan\">Data Penghasilan</a></li>
+                                    <li><a href=\"".base_url()."index.php/ref_status\">Data Status Mahasiswa</a></li>
+                                    <li><a href=\"".base_url()."index.php/ref_wilayah\">Data Wilayah</a></li>
+                                    <!--li class=\"divider\"></li>
+                                    <li><a href=\"#\">Separated link</a></li>
+                                    <li class=\"divider\"></li>
+                                    <li><a href=\"#\">One more separated link</a></li-->
+                                  </ul>
+                                </li>
+                                <li><a href=\"".base_url()."index.php/welcome/listtable\"><span class=\"glyphicon glyphicon-list\" aria-hidden=\"true\"></span> List Tabel</a></li>
                                 <!--li><a href=\"#\">Tabel Data</a></li-->
                       </ul>";
                 }
@@ -78,7 +106,7 @@
                                     ".$this->session->userdata('username')." on ".$this->session->userdata('ws')." <span class=\"caret\"></span>
                               </a-->
                               <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">
-                                    ".$this->session->userdata('username')." <span class=\"caret\"></span>
+                                    <span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></span> ".$this->session->userdata('username')." <span class=\"caret\"></span>
                               </a>
                               <ul class=\"dropdown-menu\" role=\"menu\">
                                 <li><a href=\"".base_url()."index.php/welcome/token/".$this->uri->segment(1)."-".$this->uri->segment(2)."\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\"></span> Generate Token</a></li>
