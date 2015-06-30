@@ -98,15 +98,22 @@ class Ws_mahasiswa extends CI_Controller {
                 $error_msg = array();
                 $i=0;
                 
-                foreach ($temp_result['result'] as $key) {
-                    ++$i;
-                    if ($key['error_desc']==NULL) {
-                        ++$sukses_count;
-                    } else {
-                        ++$error_count;
-                        $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
-                    }
+                if ($temp_result['result']) {
+                    foreach ($temp_result['result'] as $key) {
+                        ++$i;
+                        if ($key['error_desc']==NULL) {
+                            ++$sukses_count;
+                        } else {
+                            ++$error_count;
+                            $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
+                        }
+                    }    
+                } else {
+                    echo "<div class=\"alert alert-danger\" role=\"alert\">
+                              <h4>Error</h4>";
+                              echo $temp_result['error_desc']."</div>";
                 }
+                
                 
                 if ((!$sukses_count==0) || (!$error_count==0)) {
                     echo "<div class=\"alert alert-warning\" role=\"alert\">
@@ -348,6 +355,8 @@ class Ws_mahasiswa extends CI_Controller {
                                     echo "</div>
                                 </div>";
                 }
+            } else {
+                echo "<div class=\"bs-callout bs-callout-danger\">Error: Tidak dapat mengekstrak file CSV. Silahkan dicoba kembali</div>";
             }
             
             
