@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session','nusoap_lib','form_validation','pagination','csvimport');
+$autoload['libraries'] = array('session','nusoap_lib','form_validation','pagination','csvimport','database');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('m_msmhs');
 
 
 /* End of file autoload.php */

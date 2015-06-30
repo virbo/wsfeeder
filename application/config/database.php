@@ -48,11 +48,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = 'DRIVER={Microsoft dBase Driver (*.dbf)};Dbq=C:\DIKTI';
+//$db['default']['hostname'] = 'test_dbf';
 $db['default']['username'] = '';
 $db['default']['password'] = '';
 $db['default']['database'] = '';
-$db['default']['dbdriver'] = 'mysql';
+//$db['default']['dbdriver'] = 'mysql';
+$db['default']['dbdriver'] = 'odbc';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
