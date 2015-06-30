@@ -49,10 +49,7 @@
                         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                             <div class="panel-body">
                                 <h4>Daftar Mahasiswa</h4>
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-danger" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Nilai Pindahan <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai pindahan mahasiswa<br /><br />
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <div class="btn-group btn-group-sm" role="group"><button type="button" class="btn btn-default dropdown-toggle btn-info" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Nilai Mahasiswa <span class="caret"></span></button></div> untuk melihat, mengupload dan mendownload nilai mahasiswa/aktivitas perkuliahan mahasiswa<br /><br />
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Data Mahasiswa (CSV File)</a> untuk mengupload data mahasiswa<br /><br />
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-info"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Format Data Mahasiswa (CSV File)</a> untuk mendownload format daftar mahasiswa<br /><br />
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Checklist nama Mahasiswa kemudian klik <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Eksport ke Feeder</a> Untuk memasukkan data ke Feeder<br />
                             </div>
                         </div>
                     </div>
