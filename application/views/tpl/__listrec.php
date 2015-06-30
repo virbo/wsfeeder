@@ -1,4 +1,4 @@
-<h4>Tabel <?php echo $tabel;?> (Jumlah Record: <?php echo $total['result'];?>)</h4>
+<h4>Tabel <?php echo $tabel;?> (Jumlah Record: <?php echo $total;?>)</h4>
 <?php //echo $pagination;?>
 <table class="table table-hover table-striped">
     <thead>
