@@ -57,7 +57,7 @@ class Epsbed_mahasiswa extends CI_Controller {
     {
         $temp_cari = $this->input->post('nm_mhs');
         //$temp_rec = $this->db->query("SELECT * FROM MSMHS JOIN MSPST ON (MSPST.KDPTIMSPST=MSMHS.KDPTIMSMHS)")->result();
-        $temp_rec = $this->db->query("SELECT * FROM MSMHS, MSPST WHERE MSPST.KDPTIMSPST=MSMHS.KDPTIMSMHS")->result();
+        $temp_rec = $this->db->query("SELECT * FROM MSMHS, MSPST WHERE MSPST.KDPTIMSPST=MSMHS.KDPTIMSMHS AND MSMHS.TAHUNMSMHS='2014'")->result();
         //$temp_rec = $this->m_msmhs->get_all($this->limit,$offset,$order_column,$order_type,$temp_cari)->result();
         //$temp_tot = $this->m_msmhs->get_count($temp_cari)->num_rows();
         //$temp_tot = $this->m_msmhs->count_all()->num_rows();
