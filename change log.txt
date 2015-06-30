@@ -1,0 +1,27 @@
+[30 Juni 2015]
+1. Penambahan menu baru Data Referensi (Read Only).
+2. Penambahan menu baru EPSBED (Read Only).
+3. Penambahan fitur upload Aktivitas Kuliah Mahasiswa (Unstable).
+
+[24 Juni 2015]
+1. Perbaikan pada fungsi pengambilan jumlah record yang ada disetiap halaman. (menyesuaikan dengan Patch D)
+2. Penambahan fitur pencarian data di masing-masing halaman.
+3. Perbaikan dan penambahan mime file tipe csv...
+
+[11 Juni 2015]
+1. Penambahan fitur setting untuk memasukkan Kode PT.
+2. Perbaikan pada fungsi import data mahasiswa yg mana codingnya dibuat lebih dinamis sehingga dapat menyesuaikan kolom2 yg terisi dan penambahan pemilihan tipe delimiter file csv.
+3. Perbaikan pada fungsi generate file csv dihalaman mahasiswa (untuk halaman lain dalam proses perbaikan) yang mana bisa memilih tipe delimiter yg ada.
+
+[3 Juni 2015]
+1. Perbaikan pada halaman nilai mahasiswa dan sekaligus menghapus/menonaktifkan sementara beberapa fungsi.
+2. Penambahan fitur upload nilai pindahan khusus untuk mahasiswa pindahan
+3. Perbaikan pada sistem menu.
+4. Penambahan tombol switch Live dan Sandbox
+
+[29 Mei 2015]
+Fitur:
+1. Import data mahasiswa
+2. Import data Nilai Semester
+3. Menu List Tabel
+4. Menu Generate Token
