@@ -49,13 +49,13 @@ class Ws_akm extends CI_Controller {
     public function akm($offset=0,$id_smt='')
     {
         //$id_smt = '20131';
-        !empty($id_smt)?$tahuns=$id_smt:$tahuns='20141';
+        ($id_smt!='')?$tahuns=$id_smt:$tahuns='20142';
         
         $filter_smt = "id_smt='".$tahuns."'";
         
         $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
                                                         $this->tabel, $filter_smt, 
-                                                        $this->order, $this->limit, 
+                                                        $this->filter, $this->limit, 
                                                         $offset
                                                      );
         /*                                             
@@ -68,7 +68,7 @@ class Ws_akm extends CI_Controller {
                                                      
         //var_dump($temp_rec['result']);
         //$temp_count = count($temp_rec_count['result']);
-         $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$this->filter);
+         $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_smt);
          $temp_jml = $temp_count['result'];
         //echo $temp_count;
         //
@@ -94,56 +94,38 @@ class Ws_akm extends CI_Controller {
         tampil('akm/__akm_view',$data);
     }
     
-    public function createcsv($id_smt='')
+    public function createcsv()
     {
-        if (!$id_smt=='') {
-            
-            $array = array();
-            $temp_header = array('no_urut', 'nim_mhs', 'nm_mhs', 'semester', 'ips', 'ipk', 'sks_semester', 'sks_total', 'status_mhs');
-            $array[] = $temp_header;
-            
-            $filter_smt = "id_smt='".$id_smt."'";
-            
-            $temp_rec = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        $this->tabel, $filter_smt, 
-                                                        '', '', 
-                                                        ''
-                                                     );
-            //var_dump($temp_rec['result']);
-            $i=0;
-            foreach ($temp_rec['result'] as $row) {
-                ++$i;
-                
-                //get NPM Mahasiswa
-                $filter_nim = "id_reg_pd='".$row['id_reg_pd']."'";
-                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);
-                var_dump($dump_nim['result']);
-                //echo
-                
-                //get nama mahasiswa
-                /*$filter_nma = "id_reg_pd='".$row['id_reg_pd']."'";
-                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);*/
-                
-                //$filter_smt = "id_reg_pd='".$row['id_reg_pd']."'";
-                $dump_nim = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_nim);
-                $content = array($i,
-                                $dump_nim['result']['nipd'],
-                                $dump_nim['result']['nm_pd'],
-                                $id_smt,
-                                $row['ips'],
-                                $row['ipk'],
-                                $row['sks_smt'],
-                                $row['sks_total'],
-                                $row['id_stat_mhs']
-                ); 
-                $array[] = $content;
-            }
-            
-            //var_dump($array);                                         
-           // array_to_csv($array, $id_kls.'.csv');
+        $separasi = $this->input->post('separasi');
+        $array = array();
+        $temp_header = array('nim_mhs', 'nm_mhs', 'semester', 'ips', 'ipk', 'sks_semester', 'sks_total', 'status_mhs');
+        $array[] = $temp_header;
+        
+        $sample = array('Nomor Induk Mahasiswa',
+                        'Nama Mahasiswa',
+                        'Semester Mahasiswa (contoh: 20142)',
+                        'IP Semester',
+                        'IP Kumulatif',
+                        'SKS Semester',
+                        'SKS Total',
+                        'Status Mahasiswa (A: Aktif, C: Cuti, D: Drop-out/Putus Studi, L: Lulus, P: , K: Keluar, N: Non Aktif, G: Sedang Double Degree, X: Unknown)'
+                    );
+        $array[] = $sample;
+        $time = time();
+        //var_dump($array);
+        $temp_tulis = write_file('temps/'.$time.'_akm.csv', array_to_csv($array,'',$separasi));
+        //echo "File berhasil digenerate. <a href=\"".base_url()."temps/".$time."_mahasiswa.csv\">Download</a>";
+        
+        if ($temp_tulis) {
+            echo "<div class=\"bs-callout bs-callout-success\">
+                     File berhasil digenerate. <a href=\"".base_url()."temps/".$time."_akm.csv\">Download</a>
+                  </div>";    
         } else {
-            echo "Cannot create CSV";
+            echo "<div class=\"bs-callout bs-callout-danger\">
+                      <h4>Error</h4>File tidak bisa digenerate. Folder 'temps' tidak ada atau tidak bisa ditulisi.
+                 </div>";
         }
+        
     }
     
     public function extractcsv()
@@ -161,45 +143,67 @@ class Ws_akm extends CI_Controller {
             $csv_array = $this->csvimport->get_array($file_path);
             
             if ($csv_array) {
-                $array = array();
-                $field_key = 'id_kls';
+                $header = array('id_smt','id_reg_pd','ips','sks_smt','ipk','sks_total','id_stat_mhs');
+                //var_dump($csv_array);
                 
-                $header = array('nilai_angka', 'nilai_huruf', 'nilai_indeks');
-                
-                foreach ($csv_array as $key) {
-                    $temp_key = array('id_kls' => $key['id_kls'],
-                                    'id_reg_pd' => $key['id_reg_pd']
-                                );
-                    $temp_data = array('nilai_angka' => $key['nilai_angka'],
-                                    'nilai_huruf' => $key['nilai_huruf'],
-                                    'nilai_indeks' => $key['nilai_indeks']
-                    );
-                    
-                    $array[] = array('key'=>$temp_key,'data'=>$temp_data);
-                }
-                
-                $temp_result = $this->feeder->updaterset($this->session->userdata('token'),$this->tbl_nilai,$array);
-                
+                $temp_data = array();
+                $id_reg_pd = array();
                 $sukses_count = 0;
                 $sukses_msg = '';
                 $error_count = 0;
                 $error_msg = array();
+                
+                foreach ($csv_array as $value) {
+                    $temp_npm = $value['nim_mhs'];
+                    //echo $temp_npm;
+                    $filter_npm = "nipd like '%".$temp_npm."%'";
+                    $dump_npm = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_npm);
+                    //var_dump($dump_npm);
+                    if ($dump_npm['result']) {
+                        $id_reg_pd = $dump_npm['result']['id_reg_pd'];
+                        //echo $id_reg_pd;
+                    } else {
+                        $error_msg[] = "<h4>Error<br /></h4>Mahasiswa dengan NIM ".$temp_npm." tidak terdaftar";
+                    }
+                    $temp_data[] = array('id_smt' => $value['semester'],
+                                      'id_reg_pd' => $id_reg_pd,
+                                            'ips' => $value['ips'],
+                                        'sks_smt' => $value['sks_semester'],
+                                            'ipk' => $value['ipk'],
+                                      'sks_total' => $value['sks_total'],
+                                    'id_stat_mhs' => $value['status_mhs']
+                                   );
+                    //$temp_result = $this->feeder->insertrecord($this->session->userdata['token'], $this->tabel, $temp_data);
+                    //var_dump($temp_result);
+                }
+                
+                //var_dump($temp_data);
+                /*
+                $temp_result = $this->feeder->insertrset($this->session->userdata['token'], $this->tabel, $temp_data);
                 $i=0;
                 
-                foreach ($temp_result['result'] as $key) {
-                    ++$i;
-                    if ($key['error_desc']==NULL) {
-                        ++$sukses_count;
-                    } else {
-                        ++$error_count;
-                        $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
+                //var_dump($temp_result);
+                
+                if ($temp_result['result']) {
+                    foreach ($temp_result['result'] as $key) {
+                        ++$i;
+                        if ($key['error_desc']==NULL) {
+                            ++$sukses_count;
+                        } else {
+                            ++$error_count;
+                            $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
+                        }
                     }
+                } else {
+                    echo "<div class=\"alert alert-danger\" role=\"alert\">
+                              <h4>Error</h4>";
+                              echo $temp_result['error_desc']."</div>";
                 }
                 
                 if ((!$sukses_count==0) || (!$error_count==0)) {
                     echo "<div class=\"alert alert-warning\" role=\"alert\">
-                                    Results (total ".$i." baris data):<br /><font color=\"#3c763d\">".$sukses_count." data berhasil diupdate</font><br />
-                                    <font color=\"#ce4844\" >".$error_count." data error (tidak bisa diupdate) </font>";
+                                    Results (total ".$i." baris data):<br /><font color=\"#3c763d\">".$sukses_count." data Mahasiswa baru berhasil ditambah</font><br />
+                                    <font color=\"#ce4844\" >".$error_count." data error (tidak bisa ditambahkan) </font>";
                                     if (!$error_count==0) {
                                         echo "<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">
                                           Detail error
@@ -215,7 +219,10 @@ class Ws_akm extends CI_Controller {
                                         
                                     echo "</div>
                                 </div>";
-                }
+                }*/
+                
+            } else {
+                echo "<div class=\"bs-callout bs-callout-danger\">Error: Tidak dapat mengekstrak file CSV. Silahkan dicoba kembali</div>";
             }
         }
     }
@@ -286,13 +293,19 @@ class Ws_akm extends CI_Controller {
         tampil('nilai/__view_kelas',$data);
     }
  
+    public function form_createcsv()
+    {
+        $data['s'] = '';
+        $this->load->view('tpl/akm/__form_createcsv',$data);   
+    }
+    
     public function form_csv($id_kls = '')
     {
         //if (!$id_kls=='') {
             //echo $id_kls;
             $data['id_kls'] = $id_kls;
             //$data['url'] = ''
-            $this->load->view('tpl/nilai/__form_csv',$data);
+            $this->load->view('tpl/akm/__form_csv',$data);
         //} else {
             //echo "Error. Please back and try again";
         //}
