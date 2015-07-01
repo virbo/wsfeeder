@@ -178,7 +178,7 @@ class Ws_akm extends CI_Controller {
                 }
                 
                 //var_dump($temp_data);
-                /*
+                
                 $temp_result = $this->feeder->insertrset($this->session->userdata['token'], $this->tabel, $temp_data);
                 $i=0;
                 
@@ -219,7 +219,7 @@ class Ws_akm extends CI_Controller {
                                         
                                     echo "</div>
                                 </div>";
-                }*/
+                }
                 
             } else {
                 echo "<div class=\"bs-callout bs-callout-danger\">Error: Tidak dapat mengekstrak file CSV. Silahkan dicoba kembali</div>";
