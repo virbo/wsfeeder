@@ -5,7 +5,7 @@
  * 
  * @author      Yusuf Ayuba
  * @copyright   2015
- * @Url         http://jago.link
+ * @link         http://jago.link
  * @Github      https://github.com/virbo/wsfeeder
  * 
  */
@@ -68,12 +68,13 @@ class Ws extends CI_Controller {
                         }
 
                         $sessi = array('login' => TRUE, 
-                                        'ws' => $ws,
-                                        'token' => $temp_token,
-                                        'username' => $username,
-                                        'password' => $password,
-                                        'url' => base_url(),
-                                        'id_sp' => $id_sp);
+                                          'ws' => $ws,
+                                       'token' => $temp_token,
+                                    'username' => $username,
+                                    'password' => $password,
+                                         'url' => base_url(),
+                                     'kode_pt' => $temp_npsn,
+                                       'id_sp' => $id_sp);
                                         
                         $this->session->sess_expiration = '900'; //session expire 15 Minutes
                         $this->session->sess_expire_on_close = 'true';

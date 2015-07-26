@@ -22,10 +22,11 @@
             </thead>
             <tbody>
                 <?php
-                  //  var_dump($listtable);
+                    $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
+                    
                     if (!$listtable) {
                         echo "<tr>
-                                  <td colspan=\"5\">Data kosong</td>
+                                  <td colspan=\"5\">".$pesan."</td>
                               </tr>";
                     } else {
                         $i=0;

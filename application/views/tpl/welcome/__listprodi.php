@@ -23,13 +23,10 @@
             </thead>
             <tbody>
                 <?php
-                  //  var_dump($listtable);
+                    $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
                     if (!$listprodi) {
-                        //echo "Data kosong";
                         echo "<tr>
-                                    <td colspan=\"4\">
-                                        Data Kosong.".($ses_id_sp==0?' Kode PT tidak ditemukan, silahkan masukkan Kode PT Anda melalui halaman <a href="'.base_url().'index.php/welcome/setting">Setting</a>':'')."
-                                    </td>
+                                    <td colspan=\"4\">".$pesan.($ses_id_sp==0?' - Kode PT tidak ditemukan, silahkan masukkan Kode PT Anda melalui halaman <a href="'.base_url().'index.php/welcome/setting">Setting</a>':'')."</td>
                               </tr>";
                     } else {
                         $i=0+$offset;

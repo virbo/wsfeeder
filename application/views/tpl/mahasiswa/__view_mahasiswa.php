@@ -82,9 +82,11 @@
                 </thead>
                 <tbody>
                     <?php
-                        if ($total==0) {
+                        $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
+                        //if ($total==0) {
+                        if(!$listsrec) {
                             echo "<tr>
-                                        <td colspan=\"9\">Data kosong</td>
+                                        <td colspan=\"9\">".$pesan."</td>
                                   </tr>";
                         } else {
                             $i=0+$offset;

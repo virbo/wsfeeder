@@ -5,7 +5,7 @@
  * 
  * @author      Yusuf Ayuba
  * @copyright   2015
- * @Url         http://jago.link
+ * @link         http://jago.link
  * @Github      https://github.com/virbo/wsfeeder
  * 
  */
@@ -274,6 +274,8 @@ class Ws_mahasiswa extends CI_Controller {
         //
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
+        
+        $data['temp_error'] = $temp_rec['error_desc'];
         $data['listsrec'] = $temp_rec['result'];
         $data['total'] = $temp_jml;
 

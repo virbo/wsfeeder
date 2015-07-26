@@ -5,7 +5,7 @@
  * 
  * @author      Yusuf Ayuba
  * @copyright   2015
- * @Url         http://jago.link
+ * @link         http://jago.link
  * @Github      https://github.com/virbo/wsfeeder
  * 
  */
@@ -42,7 +42,7 @@ class Welcome extends CI_Controller {
     public function listtable()
     {
         $temp_table = $this->feeder->listtable($this->session->userdata('token'));
-        //$data['pagination'] = '';
+        $data['temp_error'] = $temp_table['error_desc'];
         $data['listtable'] = $temp_table['result'];
         tampil('welcome/__listtabel',$data);
        
@@ -70,6 +70,8 @@ class Welcome extends CI_Controller {
         //
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
+        
+        $data['temp_error'] = $temp_prodi['error_desc'];
         $data['listprodi'] = $temp_prodi['result'];
         $data['total'] = $temp_count['result'];
         $data['ses_id_sp'] = $temp_sp;
@@ -183,7 +185,12 @@ class Welcome extends CI_Controller {
                         $id_sp = '0';
                     }
                     
-                    $this->session->set_userdata('id_sp',$id_sp);
+                    //$this->session->set_userdata('')
+                    $sessi = array('kode_pt' => $temp_pt,
+                                     'id_sp' => $id_sp
+                             );
+                    //$this->session->set_userdata('id_sp',$id_sp);
+                    $this->session->set_userdata($sessi);
                     $this->session->set_flashdata('sukses','Kode PT berhasil diupdate');
                     redirect(base_url().'index.php/welcome/setting');
                 } else {
@@ -196,6 +203,30 @@ class Welcome extends CI_Controller {
         $data['npsn'] = $temp_npsn;
         tampil('welcome/__setting',$data);
     }
+/*
+    public function get_mhs()
+    {
+        $tbl_utama = 'mahasiswa';
+        $tbl_tamu = 'mahasiswa_pt';
+        
+        $tbl_join = 'mahasiswa JOIN mahasiswa_pt ON (mahasiswa.id_pd=mahasiswa_pt.id_pd)';
+        $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],$tbl_utama,'');
+        
+        var_dump($temp_sp['result']);
+    }
+    
+    public function get_nilai()
+    {
+        $tbl_utama = 'kelas_kuliah';
+        $tbl_tamu = 'nilai';
+        
+        //$tbl_join = 'nilai JOIN kelas_kuliah ON (nilai.p.id_kls=kelas_kuliah.p.id_kls)';
+        $filter = 'p.id_kls IN (SELECT k.id_kls FROM kelas_kulia AS k WHERE nilai.p.id_kls=k.id_kls)';
+        //$filter = 'p.id_kls=kelas_kuliah.id_kls'; 
+        $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],$tbl_tamu,$filter);
+        
+        var_dump($temp_sp);
+    }*/
 }
 
 /* End of file welcome.php */

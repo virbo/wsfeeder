@@ -43,27 +43,12 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <?php
-                    /*if ($total==0) {
-                        //echo $total;
-                        echo "<tbody>
-                                    <tr>
-                                        <td colspan=\"11\" align=\"center\">";
-                                            $filters_smt = "id_smt='".$id_smt."'";
-                                            $dumps_smt = $this->feeder->getrecord($this->session->userdata('token'),'semester',$filters_smt);
-                                            echo "Tidak ada di <strong>Semester ".$dumps_smt['result']['nm_smt']."</strong><br />
-                                                 <a href=\"".base_url()."index.php/ws_akm/createcsv/".$id_smt."\" class=\"btn btn-info\"><span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span> Download File CSV</a>";
-                                   echo "</td>
-                                    </tr>
-                              </tbody>
-                              </table>";
-                    } else {*/
-                ?>
                 <tbody>
                     <?php
+                        $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
                         if (!$listakm) {
                            echo "<tr>
-                                    <td colspan=\"11\">Data kosong</td>
+                                    <td colspan=\"11\">".$pesan."</td>
                                  </tr>"; 
                         } else {
                             $i=0+$offset;

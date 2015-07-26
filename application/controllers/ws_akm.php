@@ -5,7 +5,7 @@
  * 
  * @author      Yusuf Ayuba
  * @copyright   2015
- * @Url         http://jago.link
+ * @link         http://jago.link
  * @Github      https://github.com/virbo/wsfeeder
  * 
  */
@@ -49,7 +49,7 @@ class Ws_akm extends CI_Controller {
     public function akm($offset=0,$id_smt='')
     {
         //$id_smt = '20131';
-        ($id_smt!='')?$tahuns=$id_smt:$tahuns='20142';
+        ($id_smt!='')?$tahuns=$id_smt:$tahuns='20141';
         
         $filter_smt = "id_smt='".$tahuns."'";
         
@@ -58,23 +58,10 @@ class Ws_akm extends CI_Controller {
                                                         $this->filter, $this->limit, 
                                                         $offset
                                                      );
-        /*                                             
-        $temp_rec_count = $this->feeder->getrset($this->session->userdata('token'), 
-                                                        $this->tabel, $filter_smt, 
-                                                        $this->order, '', 
-                                                        ''
-                                                     );*/ 
-        //var_dump($temp_rec_count);
-                                                     
-        //var_dump($temp_rec['result']);
-        //$temp_count = count($temp_rec_count['result']);
-         $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_smt);
-         $temp_jml = $temp_count['result'];
+        $temp_count = $this->feeder->count_all($this->session->userdata('token'), $this->tabel,$filter_smt);
+        $temp_jml = $temp_count['result'];
         //echo $temp_count;
-        //
-        
-        //echo $start;
-        
+
         $config['base_url'] = site_url('ws_akm/akm');
         $config['total_rows'] = $temp_jml;
         $config['per_page'] = $this->limit;
@@ -85,6 +72,8 @@ class Ws_akm extends CI_Controller {
         $data['offset'] = $offset;
         $data['total'] = $temp_jml;
         $data['id_smt'] = $tahuns;
+        
+        $data['temp_error'] = $temp_rec['error_desc'];
         $data['listakm'] = $temp_rec['result'];
         
         $offset==0? $start=$this->pagination->cur_page: $start=$offset+1;
@@ -301,14 +290,8 @@ class Ws_akm extends CI_Controller {
     
     public function form_csv($id_kls = '')
     {
-        //if (!$id_kls=='') {
-            //echo $id_kls;
-            $data['id_kls'] = $id_kls;
-            //$data['url'] = ''
-            $this->load->view('tpl/akm/__form_csv',$data);
-        //} else {
-            //echo "Error. Please back and try again";
-        //}
+        $data['id_kls'] = $id_kls;
+        $this->load->view('tpl/akm/__form_csv',$data);
     }
 
     public function epsbed()

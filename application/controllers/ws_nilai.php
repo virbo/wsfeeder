@@ -5,7 +5,7 @@
  * 
  * @author      Yusuf Ayuba
  * @copyright   2015
- * @Url         http://jago.link
+ * @link         http://jago.link
  * @Github      https://github.com/virbo/wsfeeder
  * 
  */
@@ -74,15 +74,6 @@ class Ws_nilai extends CI_Controller {
             $dumy_dic = $temp_dic['result'];
             
             $array = array();
-            //$header_nilai = array();
-            
-            
-            //$temp_header = array('id_kls', 'id_reg_pd', 'asal_data', 'nim', 'nm_mhs', 'nilai_angka', 'nilai_huruf', 'nilai_indeks');
-            //create header
-            /* automatic create header from database
-            foreach ($dumy_dic as $key => $value) {
-                $header_nilai[] = $value['column_name'];
-            }*/
             $header_nilai = array('no_urut', 'id_kls', 'id_reg_pd','nim', 'nm_mhs', 'nilai_angka', 'nilai_huruf', 'nilai_indeks');
             $array[] = $header_nilai;
 
@@ -90,11 +81,6 @@ class Ws_nilai extends CI_Controller {
             $i=0;
             foreach ($dumy_nilai as $row)
             {
-                //$content_nilai = array();
-                /* Automatic create content from database
-                 * foreach ($header_nilai as $header) {
-                    $content_nilai[] = $row[$header];
-                }*/
                 ++$i;
                 $filter_mhs_pt = "id_reg_pd = '".$row['id_reg_pd']."'";
                 $temp_mhs_pt = $this->feeder->getrecord($this->session->userdata('token'),'mahasiswa_pt',$filter_mhs_pt);
@@ -251,6 +237,8 @@ class Ws_nilai extends CI_Controller {
         //
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
+        
+        $data['temp_error'] = $temp_rec['error_desc'];
         $data['listsrec'] = $temp_rec['result'];
         $data['total'] = $temp_jml;
         $data['tabel'] = $this->tabel;
@@ -264,45 +252,8 @@ class Ws_nilai extends CI_Controller {
  
     public function form_csv($id_kls = '')
     {
-        //if (!$id_kls=='') {
-            //echo $id_kls;
-            $data['id_kls'] = $id_kls;
-            //$data['url'] = ''
-            $this->load->view('tpl/nilai/__form_csv',$data);
-        //} else {
-            //echo "Error. Please back and try again";
-        //}
-    }
-    
-    public function epsbed()
-    {
-        $dir_dbf = "C:/DIKTI";
-        $temp_db = dbase_open($dir_dbf."/TRNLM.dbf", 0);
-        
-        $temp_isi = array();
-        $x=0;
-        if ($temp_db) {
-            $jml_record = dbase_numrecords($temp_db);
-            
-            for ($i=1; $i <= $jml_record ; $i++) {
-                $row = dbase_get_record_with_names($temp_db, $i);
-                if (($row['THSMSTRNLM']=='20141') && ($row['KDKMKTRNLM']=='WAT301    ')) {
-                    $temp_isi[] = $row['NIMHSTRNLM'];
-                    $temp_isi[] = $row['KDKMKTRNLM'];
-                    $temp_isi[] = $row['NLAKHTRNLM'];
-                    $temp_isi[] = $row['BOBOTTRNLM'];
-                    $temp_isi[] = $row['KELASTRNLM'];
-                    ++$x;
-                }
-            }
-            //var_dump($temp_isi);
-            //echo $x;
-        } else {
-            echo "Tida bisa membuka tabel TRNLM. Silahkan cek kembali Settingan Anda";
-        }
-        //$data['isi_db'] = $temp_isi;
-        var_dump($temp_isi);
-        echo $x;
+        $data['id_kls'] = $id_kls;
+        $this->load->view('tpl/nilai/__form_csv',$data);
     }
 
 }
