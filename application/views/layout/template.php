@@ -17,6 +17,7 @@
     <link href="<?php echo base_url();?>assets/css/template.css?v=<?php echo time()?>" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/font-awesome/css/font-awesome.min.css?v=<?php echo time()?>" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/css/select2.min.css?v=<?php echo time()?>" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/select2-bootstrap2.css?v=<?php echo time()?>" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -66,9 +67,7 @@
                                   <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-refresh\" aria-hidden=\"true\"></span> Epsbed <span class=\"caret\"></span></a>
                                   <ul class=\"dropdown-menu\" role=\"menu\">
                                     <li><a href=\"".base_url()."index.php/epsbed_mahasiswa\">Mahasiswa</a></li>
-                                    <li><a href=\"#\">Nilai Semester Mahasiswa</a></li>
-                                    <li><a href=\"#\">Aktivitas Kuliah Mahasiswa</a></li>
-                                    <li><a href=\"#\">Aktivitas Mengajar Dosen</a></li>
+                                    <li><a href=\"#\"-->Kelas Perkuliahan<></li>
                                     <li><a href=\"#\">Mahasiswa Lulus / Drop Out</a></li>
                                     <!--li class=\"divider\"></li>
                                     <li><a href=\"#\">Separated link</a></li>
@@ -164,7 +163,7 @@
     <script src="<?php echo base_url();?>assets/js/select2.full.min.js?v=<?php echo time()?>"></script>
     <script>var base_url = '<?php echo base_url();?>'; </script>
     <script>
-      $('#btn_sandbox').on('click', function () {
+      $('#btn_sandbox').click(function () {
         var sandbox = $(this).attr('data-src');
         var uri = '<?php echo $this->uri->segment(1); ?>-<?php echo $this->uri->segment(2); ?>';
         var url = '<?php echo base_url().'index.php/welcome/set_koneksi/'; ?>';
@@ -175,7 +174,7 @@
         };
       })
       
-      $('#btn_live').on('click', function () {
+      $('#btn_live').click(function () {
         var live = $(this).attr('data-src');
         var uri = '<?php echo $this->uri->segment(1); ?>-<?php echo $this->uri->segment(2); ?>';
         var url = '<?php echo base_url().'index.php/welcome/set_koneksi/'; ?>';
@@ -213,6 +212,204 @@
           $('.active a').tab('show');
         });
 
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#select-all').click(function(event) {
+            if(this.checked) {
+                $(':checkbox').each(function() {
+                    this.checked = true;              
+                });
+            }else{
+                $(':checkbox').each(function() {
+                    this.checked = false;                      
+                });        
+            }
+        });
+       
+    });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#awal_masuk").select2({
+                placeholder: "Tahun Masuk...",
+            });
+            $("#stat_mhs").select2({
+                placeholder: "Awal Masuk sebagai?...",
+            });
+            $("#prodi").select2({
+                placeholder: "Kode Program Studi...",
+                minimumInputLength: 1,
+                delay: 250,
+                ajax: {
+                    url: "<?php echo base_url();?>index.php/ajax/get_prodi",
+                    dataType: 'json',
+                    delay: 20,
+                    data: function (cari) {
+                        return {
+                            q: cari.term
+                        };
+                    },
+                    
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function(obj) {
+                                return { 
+                                    id: obj.KDPSTMSPST, 
+                                    text: obj.KDPSTMSPST+' '+obj.NMPSTMSPST
+                                    //text: obj.KDPSTMSPST+' '+obj.NMPSTMSPST+' ('+obj.NMKODTBKOD+')'
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                },
+            });
+        });        
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#btn").click(function(){
+                var kd_mhs = [];
+                var temp;
+                //var modal = $(this);
+                $.each($("input[name='kd_mhs']:checked"), function(){            
+                    kd_mhs.push($(this).val());
+                });
+                temp = kd_mhs.join("-")
+                alert("My favourite sports are: " + temp);
+                
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            /*$("#myFRM").submit(function() {
+                return false;
+            })*/
+
+            $("#btn_filter").click(function(){
+                epsbedmhs_filter();
+                return false;
+            });
+
+            $("#btn_eksport").click(function(){
+                epsbedmhs_kirim();
+                return false;
+            });
+            
+            function epsbedmhs_filter() {
+                var prodi = $("#prodi").val();
+                var stat_mhs = $("#stat_mhs").val();
+                var awal_masuk = $("#awal_masuk").val();
+                //var cari = $("#cari").val();
+                //alert(prodi+" "+stat_mhs+" "+awal_masuk);
+                var url = '<?php echo base_url();?>index.php/epsbed_mahasiswa/filter/'+prodi+'/'+stat_mhs+'/'+awal_masuk;
+
+                $("#loading").html("<i class=\"fa fa-spinner fa-spin\"></i> Loading data, please wait...");
+                $.get(url, function(returnData) {
+                  if (!returnData) {
+                      $("#isi").html("<tr><td colspan=\"9\">Tidak ada data</td></tr>");
+                      $("#loading").hide();
+                      $('#pesan').hide();
+                  } else {
+                      $("#isi").html(returnData);
+                      $("#loading").hide();
+                      $('#pesan').hide();
+                  }
+                    
+                });
+            }
+
+            function epsbedkelas_filter() {
+                var prodi = $("#prodi").val();
+                var stat_mhs = $("#stat_mhs").val();
+                var awal_masuk = $("#awal_masuk").val();
+                //var cari = $("#cari").val();
+                //alert(prodi+" "+stat_mhs+" "+awal_masuk);
+                var url = '<?php echo base_url();?>index.php/epsbed_mahasiswa/filter/'+prodi+'/'+stat_mhs+'/'+awal_masuk;
+
+                $("#loading").html("<i class=\"fa fa-spinner fa-spin\"></i> Loading data, please wait...");
+                $.get(url, function(returnData) {
+                  if (!returnData) {
+                      $("#isi").html("<tr><td colspan=\"9\">Tidak ada data</td></tr>");
+                      $("#loading").hide();
+                      $('#pesan').hide();
+                  } else {
+                      $("#isi").html(returnData);
+                      $("#loading").hide();
+                      $('#pesan').hide();
+                  }
+                    
+                });
+            }
+
+            function epsbedmhs_kirim() {
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo base_url();?>index.php/epsbed_mahasiswa/insert/',
+                    //data: new FormData(this),
+                    //mimeType: 'multipart/form-data',
+                    //contentType: false,
+                    //cache: false,
+                    //processData:false,
+                    data:$("#myFRM").serialize(),
+                    beforeSend:function()
+                    {
+                        $("#pesan").hide();
+                        $("#loading").html('<i class=\"fa fa-spinner fa-spin\"></i> Processing data, please wait...');
+                        $("#loading").show();
+                    },
+                    complete:function()
+                    {
+                        $("#loading").hide();
+                        //$("#loading").empty();
+                        $("#pesan").show();
+                    },
+                    error: function()
+                    {
+                        $('#pesan').html('Error, unknown');
+                    },
+                    success: function(data)
+                    {
+                        $("#pesan").html(data);
+                    }
+                })
+            }
+
+            function epsbedkelas_kirim() {
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo base_url();?>index.php/epsbed_kelas/insert/',
+                    //data: new FormData(this),
+                    //mimeType: 'multipart/form-data',
+                    //contentType: false,
+                    //cache: false,
+                    //processData:false,
+                    data:$("#myFRM").serialize(),
+                    beforeSend:function()
+                    {
+                        $("#pesan").hide();
+                        $("#loading").html('<i class=\"fa fa-spinner fa-spin\"></i> Processing data, please wait...');
+                        $("#loading").show();
+                    },
+                    complete:function()
+                    {
+                        $("#loading").hide();
+                        //$("#loading").empty();
+                        $("#pesan").show();
+                    },
+                    error: function()
+                    {
+                        $('#pesan').html('Error, unknown');
+                    },
+                    success: function(data)
+                    {
+                        $("#pesan").html(data);
+                    }
+                })
+            }
+        })
     </script>
     <div class="modal fade modal-wide" id="modalku" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
