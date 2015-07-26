@@ -7,7 +7,9 @@
 6. Perbaikan pada pembacaan letak folder EPSBED di halaman Eksport Data Mahasiswa dari EPSBED
 7. Perbaikan pada halaman setting
 8. Penambahan fitur Impor data Mahasiswa dari EPSBED
-9. Update Font Awesome
+9. Penambahan file epsbed.ini untuk menyimpan folder EPSBED
+10. Update Font Awesome
+11. Update main template
 
 [30 Juni 2015]
 1. Penambahan menu baru Data Referensi (Read Only).
