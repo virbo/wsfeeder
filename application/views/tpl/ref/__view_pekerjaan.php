@@ -31,19 +31,20 @@
                         <tr>
                             <th width="5%">#</th>
                             <?php
-                                foreach ($listsdic as $value) {
-                                    echo "<th>".$value['column_name']."</th>";
+                                if ($temp_error=='') {
+                                    foreach ($listsdic as $value) {
+                                        echo "<th>".$value['column_name']."</th>";
+                                    }
                                 }
                             ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                            $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
                             if (!$listsrec) {
                                 echo "<tr>
-                                            <td colspan=\"10\">
-                                                Data Kosong
-                                            </td>
+                                            <td colspan=\"10\">".$pesan."</td>
                                       </tr>";
                             } else {
                                 $i=0;

@@ -43,11 +43,10 @@
                     </thead>
                     <tbody>
                         <?php
+                            $temp_error!=''?$pesan=$temp_error:$pesan='Data kosong';
                             if (!$listsrec) {
                                 echo "<tr>
-                                            <td colspan=\"10\">
-                                                Data Kosong
-                                            </td>
+                                            <td colspan=\"10\">".$pesan."</td>
                                       </tr>";
                             } else {
                                 $i=0+$offset;

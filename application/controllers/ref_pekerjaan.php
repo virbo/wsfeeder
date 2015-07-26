@@ -81,6 +81,8 @@ class Ref_pekerjaan extends CI_Controller {
         //
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
+        
+        $data['temp_error'] = $temp_rec['error_desc'];
         $data['listsdic'] = $temp_dir['result'];
         $data['listsrec'] = $temp_rec['result'];
         $data['total'] = $temp_count['result'];

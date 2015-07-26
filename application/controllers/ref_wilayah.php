@@ -97,6 +97,8 @@ class Ref_wilayah extends CI_Controller {
         //
         $data['pagination'] = $this->pagination->create_links();
         $data['offset'] = $offset;
+        
+        $data['temp_error'] = $temp_rec['error_desc'];
         $data['listsrec'] = $temp_rec['result'];
         $data['total'] = $temp_jml;
         
