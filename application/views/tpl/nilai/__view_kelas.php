@@ -52,7 +52,8 @@
                                 <h4>Daftar Kelas Perkuliahan Setiap Semester Per Kelas.</h4>
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk melihat Daftar Asli Nilai Mahasiswa.<br />
                                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik icon <a><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a> di setiap Mata Kuliah untuk Mendownload Daftar Nilai Mahasiswa.<br />
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Nilai (CSV)</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Klik tombol <a class="btn btn-success"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span> Upload Nilai (CSV)</a> untuk Mengupload Daftar Nilai Mahasiswa yang sudah diisi.<br />
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Jika kolom MHS KRS bernilai <strong>0</strong>, maka lakukan pengisian KRS mahasiswa di Aplikasi Feeder.
                             </div>
                         </div>
                     </div>
@@ -119,15 +120,14 @@
                                             $count_krs = count($dump_kls['result']);
                                             
                                             echo "<td>".$count_krs."</td>
-                                                  <td>
-                                                      <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_nilai/nilai/".$value['id_kls']."\" data-target=\"#modalku\">
-                                                          <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span>
-                                                      </a>&nbsp;
-                                                      <a href=\"".base_url()."index.php/ws_nilai/createcsv/".$value['id_kls']."\" title=\"Download file CSV\"><span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span></a>&nbsp;
-                                                      <!--a href=\"#expand".$i."\" data-src=\"".base_url()."index.php/ws_nilai/epsbed\" class=\"epsbed".$i."\" data-toggle=\"collapse\" aria-expanded=\"false\" aria-controls=\"expand\">
-                                                          <span class=\"glyphicon glyphicon-retweet\" aria-hidden=\"true\">
-                                                      </a-->
-                                                  </td>
+                                                  <td>";
+                                                        if ($count_krs!=0) {
+                                                          echo "<a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_nilai/nilai/".$value['id_kls']."\" data-target=\"#modalku\">
+                                                                    <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span>
+                                                                </a>&nbsp;
+                                                                <a href=\"".base_url()."index.php/ws_nilai/createcsv/".$value['id_kls']."\" title=\"Download file CSV\"><span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span></a>";
+                                                        }
+                                           echo "</td>
                                     </tr>
                                     <tr class=\"collapse\" id=\"expand".$i."\">
                                         <td colspan=\"8\">
