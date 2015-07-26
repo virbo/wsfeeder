@@ -1,3 +1,14 @@
+[26 Juli 2015]
+1. Perbaikan pada halaman login
+2. Perbaikan pada halaman welcome
+3. Perbaikan pada halaman import data mahasiswa
+4. Perbaikan pada halaman import nilai mahasiswa
+5. Perbaikan pada halaman import aktivitas kuliah mahasiswa
+6. Perbaikan pada pembacaan letak folder EPSBED di halaman Eksport Data Mahasiswa dari EPSBED
+7. Perbaikan pada halaman setting
+8. Penambahan fitur Impor data Mahasiswa dari EPSBED
+9. Update Font Awesome
+
 [30 Juni 2015]
 1. Penambahan menu baru Data Referensi (Read Only).
 2. Penambahan menu baru EPSBED (Read Only).
