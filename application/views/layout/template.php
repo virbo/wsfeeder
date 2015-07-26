@@ -67,7 +67,7 @@
                                   <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\"><span class=\"glyphicon glyphicon-refresh\" aria-hidden=\"true\"></span> Epsbed <span class=\"caret\"></span></a>
                                   <ul class=\"dropdown-menu\" role=\"menu\">
                                     <li><a href=\"".base_url()."index.php/epsbed_mahasiswa\">Mahasiswa</a></li>
-                                    <li><a href=\"#\"-->Kelas Perkuliahan<></li>
+                                    <li><a href=\"#\"-->Kelas Perkuliahan</a></li>
                                     <li><a href=\"#\">Mahasiswa Lulus / Drop Out</a></li>
                                     <!--li class=\"divider\"></li>
                                     <li><a href=\"#\">Separated link</a></li>
