@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'DRIVER={Microsoft dBase Driver (*.dbf)};Dbq=C:\DIKTI';
+$db['default']['hostname'] = 'DRIVER={Microsoft dBase Driver (*.dbf)};';
 //$db['default']['hostname'] = 'test_dbf';
 $db['default']['username'] = '';
 $db['default']['password'] = '';
