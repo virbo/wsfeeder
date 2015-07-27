@@ -327,7 +327,7 @@ class Ws_mahasiswa extends CI_Controller {
                             ++$sukses_count;
                         } else {
                             ++$error_count;
-                            $error_msg[] = "<h4>Error di baris ".$i."<br /></h4>".$key['error_desc'];
+                            $error_msg[] = "<h4>Error</h4>".$key['error_desc']." (".$key['nm_pd']." / ".$key['tgl_lahir'].")";
                         }
                     }
                 } else {
