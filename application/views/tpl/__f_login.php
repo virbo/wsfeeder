@@ -41,8 +41,8 @@
           <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password Feeder" >
         </div>
         <div class="form-group">
-          <label for="inputPassword">Database Live?</label><br />
-          <input type="checkbox" name="db_ws" checked class="form-control">
+          <label for="db_cek">Database Live?</label><br />
+          <input type="checkbox" id="db_cek" name="db_ws" checked class="form-control">
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <?php echo form_close();?>
