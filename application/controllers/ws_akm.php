@@ -191,7 +191,7 @@ class Ws_akm extends CI_Controller {
                 
                 if ((!$sukses_count==0) || (!$error_count==0)) {
                     echo "<div class=\"alert alert-warning\" role=\"alert\">
-                                    Results (total ".$i." baris data):<br /><font color=\"#3c763d\">".$sukses_count." data Mahasiswa baru berhasil ditambah</font><br />
+                                    Results (total ".$i." baris data):<br /><font color=\"#3c763d\">".$sukses_count." data AKM baru berhasil ditambah</font><br />
                                     <font color=\"#ce4844\" >".$error_count." data error (tidak bisa ditambahkan) </font>";
                                     if (!$error_count==0) {
                                         echo "<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">

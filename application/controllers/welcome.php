@@ -203,30 +203,6 @@ class Welcome extends CI_Controller {
         $data['npsn'] = $temp_npsn;
         tampil('welcome/__setting',$data);
     }
-/*
-    public function get_mhs()
-    {
-        $tbl_utama = 'mahasiswa';
-        $tbl_tamu = 'mahasiswa_pt';
-        
-        $tbl_join = 'mahasiswa JOIN mahasiswa_pt ON (mahasiswa.id_pd=mahasiswa_pt.id_pd)';
-        $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],$tbl_utama,'');
-        
-        var_dump($temp_sp['result']);
-    }
-    
-    public function get_nilai()
-    {
-        $tbl_utama = 'kelas_kuliah';
-        $tbl_tamu = 'nilai';
-        
-        //$tbl_join = 'nilai JOIN kelas_kuliah ON (nilai.p.id_kls=kelas_kuliah.p.id_kls)';
-        $filter = 'p.id_kls IN (SELECT k.id_kls FROM kelas_kulia AS k WHERE nilai.p.id_kls=k.id_kls)';
-        //$filter = 'p.id_kls=kelas_kuliah.id_kls'; 
-        $temp_sp = $this->feeder->getrecord($this->session->userdata['token'],$tbl_tamu,$filter);
-        
-        var_dump($temp_sp);
-    }*/
 }
 
 /* End of file welcome.php */
