@@ -12,12 +12,14 @@
  
 class Ws extends CI_Controller {
     
+    private $dir_ws;
     public function __construct()
     {
         parent::__construct();
         if ($this->session->userdata('login')) {
             redirect('welcome');
         }
+        $this->dir_ws  = 'http://localhost:8082/ws/';
     }
     
     public function index()
@@ -28,22 +30,21 @@ class Ws extends CI_Controller {
     public function login()
     {
         if ($this->input->post()) {
-            $this->form_validation->set_rules('inputWs', 'URL Webservice', 'trim|required');
+            //$this->form_validation->set_rules('inputWs', 'URL Webservice', 'trim|required');
             $this->form_validation->set_rules('inputUsername', 'Username Feeder', 'trim|required');
             $this->form_validation->set_rules('inputPassword', 'Password Feeder', 'required');
             
-            $ws = $this->input->post('inputWs', TRUE);
+            //$ws = $this->input->post('inputWs', TRUE);
             $username = $this->input->post('inputUsername', TRUE);
             $password = $this->input->post('inputPassword', TRUE);
+            $temp_ws = $this->input->post('db_ws');
             
             if($this->form_validation->run() == TRUE) {
+                $ws = $temp_ws=='on'?$this->dir_ws.'live.php?wsdl':$this->dir_ws.'sandbox.php?wsdl';
                 $ws_client = new nusoap_client($ws, true);
                 
                 $temp_proxy = $ws_client->getProxy();
                 $temp_error = $ws_client->getError();
-                
-                //var_dump($temp_error);
-                
                 if ($temp_proxy==NULL) {
                     $this->session->set_flashdata('error','Gagal melakukan koneksi ke Webservice Feeder.<br /><pre>'.$temp_error.'</pre>');
                     //$this->session->set_flashdata('error',$temp_error);
