@@ -32,11 +32,17 @@
 
       <!--form class="form-signin"-->
         <h2 class="form-signin-heading">Login Feeder</h2>
-        <label for="inputWs">Webservice Feeder</label>
-        <input type="text" id="inputWs" name="inputWs" class="form-control" placeholder="http://" autofocus>
-        <label for="inputUsername">Username Feeder</label>
-        <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username Feeder" >
-        <label for="inputPassword">Password Feeder</label>
-        <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password Feeder" >
+        <div class="form-group">
+          <label for="inputUsername">Username</label>
+          <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username Feeder" >
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password Feeder" >
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Database Live?</label><br />
+          <input type="checkbox" name="db_ws" checked class="form-control">
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <?php echo form_close();?>

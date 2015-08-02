@@ -18,6 +18,8 @@
     <link href="<?php echo base_url();?>assets/font-awesome/css/font-awesome.min.css?v=<?php echo time()?>" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/css/select2.min.css?v=<?php echo time()?>" rel="stylesheet">
     <link href="<?php echo base_url();?>assets/css/select2-bootstrap2.css?v=<?php echo time()?>" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/bootstrap-switch.min.css?v=3.3.2" rel="stylesheet">
+    <link href="<?php echo base_url();?>assets/css/bootstrap-switch.min.css?v=3.3.2" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -161,6 +163,7 @@
     <script src="<?php echo base_url();?>assets/js/bootstrap.min.js?v=<?php echo time()?>"></script>
     <script src="<?php echo base_url();?>assets/js/back-to-top.js?v=<?php echo base_url();?>"></script>
     <script src="<?php echo base_url();?>assets/js/select2.full.min.js?v=<?php echo time()?>"></script>
+    <script src="<?php echo base_url();?>assets/js/bootstrap-switch.min.js?v=3.3.2"></script>
     <script>var base_url = '<?php echo base_url();?>'; </script>
     <script>
       $('#btn_sandbox').click(function () {
@@ -186,6 +189,7 @@
     </script>
     <script>
         $(document).ready(function(){
+          $("[name='db_ws']").bootstrapSwitch();
           $('a.modalButton').click(function(){
             var src = $(this).attr('data-src');
             
