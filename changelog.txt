@@ -1,3 +1,6 @@
+[3 Agustus 2015]
+1. Perbaikan pada halaman Login dengan menghilangkan field isian alamat Webservice Feeder dan menggantikannya dengan switch button.
+
 [26 Juli 2015]
 1. Perbaikan pada halaman login
 2. Perbaikan pada halaman welcome
