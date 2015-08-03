@@ -1,3 +1,7 @@
+[4 Agustus 2015]
+1. Perbaikan upload dan download di halaman mahasiswa dengan menambahkan pilihan delimiter file csv.
+2. Perbaikan upload dan download di halaman nilai dengan menambahkan pilihan delimiter file csv.
+
 [2 Agustus 2015]
 1. Perbaikan pada halaman Login dengan menghilangkan field isian alamat Webservice Feeder dan menggantikannya dengan switch button.
 
