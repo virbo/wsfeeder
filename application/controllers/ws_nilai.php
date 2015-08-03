@@ -55,8 +55,10 @@ class Ws_nilai extends CI_Controller {
         $this->kelas();
     }
     
-    public function createcsv($id_kls='')
+    public function createcsv()
     {
+        $id_kls = $this->input->post('id_kls',TRUE);
+        $separasi = $this->input->post('separasi', TRUE);
         if (!$id_kls=='') {
             
             //ambil data nilai
@@ -100,8 +102,15 @@ class Ws_nilai extends CI_Controller {
                 $array[] = $content_nilai;
             }
             //$array[] = $header_nilai;
-            array_to_csv($array, $id_kls.'.csv');
+            //array_to_csv($array, $id_kls.'.csv');
             //var_dump($array);
+            $date = date('Y-m-d');
+            $time = time();
+            write_file('temps/nilai_'.$date.'-'.$time.'.csv', array_to_csv($array,'',$separasi));
+            //echo "File berhasil digenerate. <a href=\"".base_url()."temps/".$time."_mahasiswa.csv\">Download</a>";
+            echo "<div class=\"bs-callout bs-callout-success\">
+                     File berhasil digenerate. <a href=\"".base_url()."temps/nilai_".$date.'-'.$time.".csv\">Download</a>
+                  </div>";
             
         } else {
             echo "Cannot create CSV";
@@ -110,12 +119,14 @@ class Ws_nilai extends CI_Controller {
     
     public function extractcsv()
     {
+        $separasi = $this->input->post('separasi', TRUE);
         if (!$this->upload->do_upload()) {
             echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
         } else {
             $file_data = $this->upload->data();
             $file_path = $this->config->item('upload_path').$file_data['file_name'];
-            $csv_array = $this->csvimport->get_array($file_path);
+            //$csv_array = $this->csvimport->get_array($file_path);
+            $csv_array = $this->csvimport->get_array($file_path,'','','',$separasi);
             
             if ($csv_array) {
                 $array = array();
@@ -254,6 +265,16 @@ class Ws_nilai extends CI_Controller {
     {
         $data['id_kls'] = $id_kls;
         $this->load->view('tpl/nilai/__form_csv',$data);
+    }
+
+    public function form_create_csv($id_kls)
+    {
+        if ($id_kls!='') {
+            $data['id_kls'] = $id_kls;
+            $this->load->view('tpl/nilai/__form_create_csv',$data);
+        } else {
+            redirect('ws_nilai');
+        }
     }
 
 }

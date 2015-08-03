@@ -125,7 +125,9 @@
                                                           echo "<a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_nilai/nilai/".$value['id_kls']."\" data-target=\"#modalku\">
                                                                     <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span>
                                                                 </a>&nbsp;
-                                                                <a href=\"".base_url()."index.php/ws_nilai/createcsv/".$value['id_kls']."\" title=\"Download file CSV\"><span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span></a>";
+                                                                <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_nilai/form_create_csv/".$value['id_kls']."\" data-target=\"#modalku\" title=\"Download file CSV\">
+                                                                    <span class=\"glyphicon glyphicon-download-alt\" aria-hidden=\"true\"></span>
+                                                                </a>";
                                                         }
                                            echo "</td>
                                     </tr>
