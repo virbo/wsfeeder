@@ -51,15 +51,7 @@
         </div-->
         <button class="btn btn-lg btn-primary btn-block" type="submit" id="btn_upload" class="btn btn-default">Upload</button>
         <script>
-            $(document).ready(function (e) {
-                //var progressbox     = $('#progressbox');
-                //var progressbar     = $('#progressbar');
-                //var statustxt       = $('#statustxt');
-                //var submitbutton    = $("#submit");
-                //var myform          = $("#myFRM");
-                //var output          = $("#output");
-                //var completed       = '0%';
-                
+            $(document).ready(function () {
                 $("#myFRM").on('submit',(function(e) {
                     e.preventDefault();
                     $.ajax({
@@ -73,7 +65,7 @@
                         beforeSend:function()
                         {
                             $("#pesan").hide();
-                            $("#loading").html('Extract file...Please wait...');
+                            $("#loading").html('<i class=\"fa fa-spinner fa-spin\"></i> Extract file...Please wait...');
                             //$("#loading").show();
                         },
                        /*beforeSend: function() { //brfore sending form

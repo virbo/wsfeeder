@@ -58,6 +58,7 @@ class Ws_mahasiswa extends CI_Controller {
     
     public function extractcsv_nilai_pindahan()
     {
+        $separasi = $this->input->post('separasi', TRUE);
         if (!$this->upload->do_upload()) {
             echo "<div class=\"bs-callout bs-callout-danger\">".$this->upload->display_errors()."</div>";
         } else {
@@ -65,7 +66,8 @@ class Ws_mahasiswa extends CI_Controller {
             //var_dump($file_data);
             $file_path = $this->config->item('upload_path').$file_data['file_name'];
             //echo $file_path;
-            $csv_array = $this->csvimport->get_array($file_path);
+            //$csv_array = $this->csvimport->get_array($file_path);
+            $csv_array = $this->csvimport->get_array($file_path,'','','',$separasi);
             //var_dump($csv_array);
             if ($csv_array) {
                 $temp_data = array();
@@ -141,8 +143,10 @@ class Ws_mahasiswa extends CI_Controller {
         }
     }
     
-    public function createcsv_nilai_pindahan($id_reg_pd='')
+    public function createcsv_nilai_pindahan()
     {
+        $id_reg_pd = $this->input->post('id_reg_pd', TRUE);
+        $separasi = $this->input->post('separasi', TRUE);
         if (!empty($id_reg_pd)) {
             $filter_nilai = "p.id_reg_pd='".$id_reg_pd."'";
             $temp_nilai = $this->feeder->getrset($this->session->userdata('token'), 
@@ -191,7 +195,14 @@ class Ws_mahasiswa extends CI_Controller {
                                   ''  
                             );
                 $array[] = $temp_isi;
-                array_to_csv($array, $temp_mhs['result']['nipd'].'-'.$temp_mhs['result']['nm_pd'].'.csv');
+                //array_to_csv($array, $temp_mhs['result']['nipd'].'-'.$temp_mhs['result']['nm_pd'].'.csv');
+                $date = date('Y-m-d');
+                $time = time();
+                write_file('temps/nilaipindahan_'.$temp_mhs['result']['nipd'].'-'.$date.'_'.$time.'.csv', array_to_csv($array,'',$separasi));
+                //echo "File berhasil digenerate. <a href=\"".base_url()."temps/".$time."_mahasiswa.csv\">Download</a>";
+                echo "<div class=\"bs-callout bs-callout-success\">
+                         File berhasil digenerate. <a href=\"".base_url()."temps/nilaipindahan_".$temp_mhs['result']['nipd'].'-'.$date.'_'.$time.".csv\">Download</a>
+                      </div>";
             }
             
         } else {
@@ -415,13 +426,13 @@ class Ws_mahasiswa extends CI_Controller {
                         'ID Jenjang Pendidikan Ayah / Hapus kolom ini jika tidak ada',
                         'ID Pekerjaan Ayah / Hapus kolom ini jika tidak ada',
                         'ID Penghasilan Ayah / Hapus kolom ini jika tidak ada',
-                        'ID Kebutuhan Khusus Ayah - Wajib diisi',
+                        'ID Kebutuhan Khusus Ayah (Isikan angka 0) - Wajib diisi',
                         'Nama Ibu Kandung - Wajib diisi',
                         'Tanggal Lahir Ibu (yyy-mm-dd) / Hapus kolom ini jika tidak ada',
                         'ID Jenjang Pendidikan Ibu / Hapus kolom ini jika tidak ada',
                         'ID Penghasilan Ibu / Hapus kolom ini jika tidak ada',
                         'ID Pekerjaan Ibu / Hapus kolom ini jika tidak ada',
-                        'ID Kebutuhan Khusus Ibu - Wajib diisi',
+                        'ID Kebutuhan Khusus Ibu (Isikan angka 0) - Wajib diisi',
                         'Nama Wali / Hapus kolom ini jika tidak ada',
                         'Tanggal Lahir Wali (yyyy-mm-dd) / Hapus kolom ini jika tidak ada',
                         'ID Pendidikan Wali / Hapus kolom ini jika tidak ada',
@@ -467,6 +478,16 @@ class Ws_mahasiswa extends CI_Controller {
                  File berhasil digenerate. <a href=\"".base_url()."temps/".$time."_mahasiswa.csv\">Download</a>
               </div>";
     }
+
+    public function form_createcsv_nilai_pindahan($id_reg_pd)
+    {
+        if ($id_reg_pd!='') {
+            $data['id_reg_pd'] = $id_reg_pd;
+            $this->load->view('tpl/mahasiswa/__form_createcsv_nilai_pindahan',$data);
+        } else {
+            redirect('ws_mahasiswa');
+        }
+    }
     
     public function form_csv()
     {
@@ -496,7 +517,7 @@ class Ws_mahasiswa extends CI_Controller {
     
     public function form_csv_nilai_pindahan($id_reg_pd)
     {
-        if (!empty($id_reg_pd)) {
+        if ($id_reg_pd!='') {
             $data['id_reg_pd'] = $id_reg_pd;
             $this->load->view('tpl/mahasiswa/__form_csv_nilai_pindahan',$data);
         } else {

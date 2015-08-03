@@ -140,7 +140,8 @@
                                                         //echo $temp_jml;
                                                         if ($temp_jml==0) {
                                                             echo "<li>
-                                                                    <a href=\"".base_url()."index.php/ws_mahasiswa/createcsv_nilai_pindahan/".$row['id_reg_pd']."\">
+                                                                    <!--a href=\"".base_url()."index.php/ws_mahasiswa/form_createcsv_nilai_pindahan/".$row['id_reg_pd']."\"-->
+                                                                    <a href=\"javascript:void();\" class=\"modalButton\" data-toggle=\"modal\" data-src=\"".base_url()."index.php/ws_mahasiswa/form_createcsv_nilai_pindahan/".$row['id_reg_pd']."\" data-target=\"#modalku\">
                                                                         Download Daftar Nilai (CSV)
                                                                     </a>
                                                                 </li>

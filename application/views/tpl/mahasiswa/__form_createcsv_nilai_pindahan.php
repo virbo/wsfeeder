@@ -17,22 +17,12 @@
       <?php } ?>-->
       <?php
         $attributes = array('class' => 'form-signin','enctype' => 'multipart/form-data', 'id' => 'myFRM');
-        echo form_open('ws_mahasiswa/dump_csv',$attributes);
+        echo form_open('ws_mahasiswa/createcsv_nilai_pindahan',$attributes);
+        echo "<input type=\"hidden\" name=\"id_reg_pd\" value=\"".$id_reg_pd."\" />";
       ?>
       <div id="pesan"></div>
       <span id="loading"></span>
-      <h2 class="form-signin-heading">Download Data CSV</h2>
-        <div class="form-group">
-            <label for="prodi">Program Studi</label>
-            <select class="form-control" id="prodi" name="prodi">
-            <?php
-                foreach ($prodi as $key => $value) {
-                    //echo $value['nm_lemb'];
-                    echo "<option value=\"".$value['id_sms']."\">".$value['nm_lemb']."</option>";
-                }
-            ?>
-            </select>
-        </div>
+      <h2 class="form-signin-heading">Download Format Nilai Pindahan</h2>
         <div class="form-group">
             <label for="fileinput">Columns separated with:</label>
             <select class="form-control" name="separasi" id="separasi">
@@ -47,7 +37,7 @@
                 $("#myFRM").on('submit',(function(e) {
                     e.preventDefault();
                     $.ajax({
-                        url: "<?php echo base_url().'index.php/ws_mahasiswa/createcsv' ?>",
+                        url: "<?php echo base_url().'index.php/ws_mahasiswa/createcsv_nilai_pindahan' ?>",
                         type: "POST",
                         data: new FormData(this),
                         mimeType:"multipart/form-data",
