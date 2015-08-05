@@ -19,7 +19,10 @@ class Ws extends CI_Controller {
         if ($this->session->userdata('login')) {
             redirect('welcome');
         }
-        $this->dir_ws  = 'http://localhost:8082/ws/';
+        //$this->dir_ws  = 'http://localhost:8082/ws/';
+        $temp_ws = read_file('epsbed.ini');
+        $pecah = explode('#', $temp_ws);
+        $this->dir_ws = $pecah[1];
     }
     
     public function index()
