@@ -154,7 +154,7 @@
                                                 echo "</ul>
                                                 </div> ";
                                             }   
-                                     echo "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"...\">
+                                     /*echo "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"...\">
                                                 <button type=\"button\" class=\"btn btn-default dropdown-toggle btn-info\" data-toggle=\"dropdown\" aria-expanded=\"false\">
                                                     <span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> Nilai Mahasiswa <span class=\"caret\"></span>
                                                 </button>
@@ -166,8 +166,8 @@
                                                         <a>Upload Nilai-AKM</a>
                                                     </li>
                                                 </ul>
-                                           </div>
-                                           </td>
+                                           </div>*/
+                                           echo "</td>
                                       </tr>";
                             }    
                         }
