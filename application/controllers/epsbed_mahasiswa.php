@@ -34,7 +34,10 @@ class Epsbed_mahasiswa extends CI_Controller {
             
             $this->tabel = 'mahasiswa';
             $this->kode_pt = $this->session->userdata('kode_pt');
-            $this->dir_epsbed = read_file('epsbed.ini');
+            //$this->dir_epsbed = read_file('epsbed.ini');
+            $temp_dir = read_file('epsbed.ini');
+            $pecah = explode('#', $temp_dir);
+            $this->dir_epsbed = $pecah[0];
             
             $this->load->model('m_mhs','mhs');
             $this->load->model('m_pst','pst');
@@ -55,6 +58,7 @@ class Epsbed_mahasiswa extends CI_Controller {
     public function index()
     {
         $this->epsbed();
+      //echo $this->dir_epsbed;
     }
     
     public function insert()
