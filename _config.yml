@@ -1,0 +1,8 @@
+title: Wsfeeder
+description: Webservice Client for PDDIKTI Feeder
+google_analytics: UA-49509690-2
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
