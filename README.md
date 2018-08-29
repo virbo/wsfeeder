@@ -1,27 +1,88 @@
-#Webservice Client for PDDIKTI Feeder
+<p align="center">
+    <h1 align="center">Web Service PDDIKTI versi 3</h1>
+    <br>
+</p>
+
+DIRECTORY STRUCTURE
+-------------------
+      protected           contains core Yii
+        assets/             contains assets definition
+        commands/           contains console commands (controllers)
+        config/             contains application configurations
+        controllers/        contains Web controller classes
+        mail/               contains view files for e-mails
+        models/             contains model classes
+        runtime/            contains files generated during runtime
+        tests/              contains various tests for the basic application
+        vendor/             contains dependent 3rd-party packages
+        views/              contains view files for the Web application
+      web/                contains the entry script and Web resources
 
 
 
-##Kebutuhan sistem:
+REQUIREMENTS
+------------
+
+The minimum requirement by this project template that your Web server supports PHP 5.4.0.
 
 
-* Aplikasi ini dikembangkan menggunakan PHP versi 5.6.3. Untuk versi dibawahnya belum pernah diujicobakan.
-* Pastikan folder **upload** dalam keadaan bisa ditulis (writeable).
-* Pastikan folder **temps** dalam keadaan bisa ditulis (writeable).
-* Pastikan file **setting.ini** dan **epsbed.ini** dalam keadaan bisa ditulis (writeable).
+INSTALLATION
+------------
 
-##Petunjuk Installasi:
+### Install via Git Clone
 
+Clone this repository
 
-* **Menggunakan webserver Sendiri:** *Extract file hasil download dan tempatkan di folder utama webserver (contoh htdocs, root, www, etc.)*
+~~~
+git-clone https://github.com/virbo/wsfeeder.git
+~~~
 
-* **Menggunakan webserver Feeder:** *Extract file hasil download dan tempatkan di folder C:\Program Files\PDDIKTI\dataweb*
+Then running comman composer update from into directory
 
+~~~
+composer update
+~~~
 
-##Petunjuk Menjalankan:
+Now you should be able to access the application through the following URL, assuming `wsfeeder` is the directory
+directly under the Web root.
 
-* **Menggunakan Webserver Sendiri:** *Ketikkan alamat [http://localhost/nama_folder_hasil_extract](http://localhost/nama_folder_hasil_extract) dibrowser Anda*
+~~~
+http://localhost/wsfeeder/web/
+~~~
 
-* **Menggunakan webserver Feeder:** *Ketikkan alamat [http://localhost:nomor_port_feeder/nama_folder_hasil_extract](http://localhost:nomor_port_feeder/nama_folder_hasil_extract) dibrowser Anda*
+### Install from an Archive File
 
-* Setelah halaman login muncul, masukkan alamat **Username dan Password Feeder** Anda*
+Extract the archive file downloaded from my repository [gtihub.com/virbo/wsfeeder](https://github.com/virbo/wsfeeder/archive/gh-pages.zip) to
+a directory under the Web root.
+
+Set cookie validation key in `config/web.php` file to some random secret string:
+
+```php
+'request' => [
+    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+    'cookieValidationKey' => '<secret random string goes here>',
+],
+```
+
+You can then access the application through the following URL:
+
+~~~
+http://localhost/wsfeeder/web/
+~~~
+
+CONFIGURATION
+-------------
+
+### Database
+
+Edit the file `protected/config/db.php` with real data, for example:
+
+```php
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    'username' => 'root',
+    'password' => '1234',
+    'charset' => 'utf8',
+];
+```
